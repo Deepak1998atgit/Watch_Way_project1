@@ -1,0 +1,158 @@
+<%- include("partials/header") %>
+    <div class="container-scroller">
+        <!-- partial:partials/_sidebar.html -->
+        <%- include("partials/sidebar") %>
+            <!-- partial -->
+            <div class="container-fluid page-body-wrapper">
+                <!-- partial:partials/_navbar.html -->
+                <%- include("partials/navbar") %>
+                    <div class="container-fluid page-body-wrapper-lg">
+                        <!-- partial -->
+                        <div class="main-panel">
+
+                            <div class="row ">
+                                <div class="col-12 grid-margin">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h4 class="card-title">Product Management</h4>
+
+                                            <input type=button onClick="location.href='/addProductForm'"
+                                                value='Add a product with details' class="btn btn-outline-primary">
+                                            <div class="table-responsive">
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th> No</th>
+                                                            <th> Product Name </th>
+                                                            <th> Price </th>
+                                                            <th> Category </th>
+                                                            <th> Image </th>
+                                                            <th>Take an Action </th>
+                                                            <th>Product Status </th>
+
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <% product_data.forEach(function(product,index) { %>
+                                                            <tr>
+                                                                <td>
+                                                                    <%= index+1 %>
+                                                                </td>
+                                                                <td>
+                                                                    <%= product.name %>
+                                                                </td>
+                                                                <td>
+                                                                    <%= product.price %>
+                                                                </td>
+                                                                <td>
+                                                                    <%= product.category_name %>
+                                                                </td>
+                                                                <td>
+                                                                    <img class="img-thumbnail" width="100px"
+                                                                        src=" <%=product.photo %>" style=" width: 100px;
+                                                                  height: 100px;
+                                                                  background-color:#7AF723; 
+                                                                  border-radius:10px; 
+                                                                  
+                                                
+                                                                  display: flex;
+                                                        
+                        
+                                                                  overflow: hidden;" />
+                                                                </td>
+
+                                                                <td>
+                                                                    <li class="nav-item dropdown"
+                                                                        style=" list-style-type: none;">
+                                                                        <a class="nav-link" id="profileDropdown"
+                                                                            href="#" data-toggle="dropdown">
+                                                                            <div class="navbar-profile">
+
+
+                                                                                <i class="mdi mdi-pen d-none d-sm-block"
+                                                                                    style="font-size: 24px;"></i>
+                                                                            </div>
+                                                                        </a>
+                                                                        <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
+                                                                            aria-labelledby="profileDropdown">
+                                                                            <h6 class="p-3 mb-0">Take Action</h6>
+                                                                            <div class="dropdown-divider"></div>
+
+                                                                            <div class="dropdown-divider"></div>
+                                                                            <a class="dropdown-item preview-item"
+                                                                                href="/editProduct/<%= product._id %>">
+                                                                                <div class="preview-thumbnail">
+                                                                                    <div
+                                                                                        class="preview-icon bg-dark rounded-circle">
+                                                                                        <i
+                                                                                            class="mdi mdi-logout text-danger"></i>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="preview-item-content">
+                                                                                    <p class="preview-subject mb-1">
+                                                                                        Update</p>
+                                                                                </div>
+                                                                            </a>
+                                                                            <div class="dropdown-divider"></div>
+                                                                            <a class="dropdown-item preview-item"
+                                                                                href="/deleteProduct/<%= product._id%>">
+                                                                                <div class="preview-thumbnail">
+                                                                                    <div
+                                                                                        class="preview-icon bg-dark rounded-circle">
+                                                                                        <i
+                                                                                            class="mdi mdi-logout text-danger"></i>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="preview-item-content">
+                                                                                    <p class="preview-subject mb-1">
+                                                                                        Delete
+                                                                                    </p>
+                                                                                </div>
+                                                                                <div class="dropdown-divider"></div>
+                                                                            </a>
+
+                                                                        </div>
+                                                                    </li>
+
+
+                                                                </td>
+                                                                <td>
+                                                                    <div class="badge badge-outline-success">Approved
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <% }) %>
+
+                                                                <tr>
+                                                                    <td>
+                                                                        <div class="form-check form-check-muted m-0">
+
+                                                                        </div>
+                                                                    </td>
+                                                                    <td> </td>
+                                                                    <td> </td>
+                                                                    <td> </td>
+                                                                    <td> </td>
+                                                                    <td> </td>
+                                                                    <td> </td>
+
+                                                                </tr>
+
+
+
+
+
+
+
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <%- include("partials/footer") %>
+
+                        </div>
