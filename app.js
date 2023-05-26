@@ -1,8 +1,9 @@
+require("dotenv").config();
 const express=require('express');
 const path=require("path");
 const session=require('express-session');
 const app=express();
-require("dotenv").config();
+
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const connectdB=require("./server/connection/connection");
@@ -34,8 +35,13 @@ app.set("views", [
     __dirname + "/views/user_views",
     __dirname + "/views/otp",
 ]);
-  
 
+
+
+ 
+
+
+  
 
 
 

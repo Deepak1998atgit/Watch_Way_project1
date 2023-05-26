@@ -1,3 +1,10 @@
+
+
+
+
+
+
+
 const multer=require("multer");
 
 exports.checkNotLoggedIn = (req, res, next) => {
@@ -33,4 +40,14 @@ exports.checkLoggedIn = (req, res, next) => {
 exports.upload = multer({
     storage: storage,
   }).single("photo");
+
+
+
+
+  
+
+
+  
+
+
 
