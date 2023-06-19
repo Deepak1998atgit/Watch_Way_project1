@@ -1,0 +1,81 @@
+<%- include("partials/header") %>
+    <div class="container-scroller">
+        <!-- partial:partials/_sidebar.html -->
+        <%- include("partials/sidebar") %>
+            <!-- partial -->
+            <div class="container-fluid page-body-wrapper">
+                <!-- partial:partials/_navbar.html -->
+                <%- include("partials/navbar") %>
+                    <div class="container-fluid page-body-wrapper-lg">
+                        <!-- partial -->
+                        <div class="main-panel">
+
+                            <div class="main-panel">
+                                <div class="content-wrapper">
+                                    <div class="page-header">
+                                        <!-- <h3 class="page-title"> Form elements </h3> -->
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 grid-margin stretch-card justify-content-center ">
+                                            <div class="card ">
+                                                <div class="card-body ">
+                                                    <h4 class="card-title">Add Product Here</h4>
+
+                                                    <form class="forms-sample" action="/addProductForm" method="POST"
+                                                        enctype="multipart/form-data">
+                                                        <div class="form-group">
+                                                            <label for="exampleInputUsername1">Product Name</label>
+
+                                                            <input type="text" class="form-control" type="text"
+                                                                name="name" id="exampleInputUsername1"
+                                                                placeholder="Product name">
+
+                                                        </div>
+                                                        <!-- <div class="form-group">
+                                                            <label for="exampleInputUsername1">Product Name</label>
+
+                                                            <input type="text" class="form-control" type="text"
+                                                                name="category" id="exampleInputUsername1"
+                                                                placeholder="category">
+
+                                                        </div> -->
+                                                        <div class="form-group">
+                                                            <label for="exampleInputEmail1">Price</label>
+
+                                                            <input type="number" class="form-control" name="price"
+                                                                id="exampleInputPassword1"  placeholder="price"> 
+
+
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="exampleInputPassword1">Upload Image of the
+                                                                Product</label>
+                                                            <input type="file" class="form-control" name="photo"
+                                                                id="exampleInputPassword1" placeholder=" Image " multiple>
+                                                        </div>
+
+
+                                                        <div class="form-group dropdown mt-4" style="display:inline">
+                                                            <button type="button" class="btn btn-light"
+                                                                data-toggle="dropdown">
+                                                                Categories
+                                                                <select name="category">
+                                                                    <% category.forEach(function(product) { %>
+                                                                        <option value="<%= product.category %>"><%= product.category %>
+                                                                           
+                                                                        </option>
+                                                                        <% }); %>
+                                                                </select>
+                                                            </button>
+                                                        </div>
+
+
+                                                            
+                                                        <button type="submit" class="btn btn-dark">Add product</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <%- include("partials/footer") %>

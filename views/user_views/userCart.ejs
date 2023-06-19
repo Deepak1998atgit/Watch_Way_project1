@@ -1,0 +1,331 @@
+<%- include("partials/header") %>
+
+
+	<%- include("partials/navbar"),{user:user} %>
+		<!--==================================
+=            User Profile            =
+===================================-->
+		<section class="dashboard section">
+			<!-- Container Start -->
+			<div class="container">
+				<!-- Row Start -->
+				<div class="row">
+
+					<div class="col-lg-8">
+						<!-- Recently Favorited -->
+						<div class="widget dashboard-container my-adslist">
+							<h3 class="widget-header">My Cart</h3>
+
+							<% if (cartItems.length===0) { %>
+								<td colspan="4">
+									<h1>Your cart is empty.</h1>
+								</td>
+								<% } else { %>
+									<table class="table table-responsive product-dashboard-table">
+										<thead class="delete delete-btn">
+											<tr>
+												<th>Image</th>
+												<th>Product Quantity Update</th>
+												<th class="text-center">Category</th>
+												<th class="text-center">Action</th>
+											</tr>
+										</thead>
+										<tbody>
+
+											<tr>
+												<% cartItems.reverse().forEach((item)=> { %>
+													<td class="product-thumb">
+														<img width="80px" height="auto" src="<%= item.product.photo %>"
+															alt="image description">
+													</td>
+													<td class="product-details">
+														<h3 class="title">
+															<%= item.product.name %>
+														</h3>
+														<% if (item.quantity> 0) { %>
+															<p class="add-id quantity-display"
+																data-item-id="<%= item._id %>">Quantity: <%=
+																	item.quantity %>
+															</p>
+															<% } %>
+																<button class="decrement-btn"
+																	data-item-id="<%= item._id %>">-</button>
+																<input type="number" class="quantity-input"
+																	value="<%= item.quantity %>" min="1"
+																	style="width:50px"
+																	onchange="validateQuantity(this)">
+																<button class="increment-btn"
+																	data-item-id="<%= item._id %>">+</button>
+																<button class="update-quantity-btn"
+																	data-item-id="<%= item._id %>">Update</button>
+													</td>
+													<td class="product-category">
+														<span class="categories">
+															<%= item.product.category_name %>
+														</span>
+													</td>
+													<td class="action" data-title="Action">
+														<div>
+															<ul class="list-inline justify-content-center">
+																<!-- <li class="list-inline-item">
+																	<a data-toggle="tooltip" data-placement="top"
+																		title="View" class="view" href="category.html">
+																		<i class="fa fa-eye"></i>
+																	</a>
+																</li> -->
+																<li class="list-inline-item">
+																	<a data-placement="top" title="Delete"
+																		class="delete delete-btn"
+																		data-item-id="<%= item._id %>"
+																		href="javascript:void(0);">
+																		<i class="fa fa-trash"></i>
+
+																	</a>
+																</li>
+															</ul>
+														</div>
+													</td>
+
+											</tr>
+											<% }); %>
+												<% } %>
+										</tbody>
+
+									</table>
+
+						</div>
+
+
+						<!-- pagination -->
+						<div class="pagination justify-content-center">
+							<nav aria-label="Page navigation example">
+								<ul class="pagination">
+									<li class="page-item">
+										<a class="page-link" href="#" aria-label="Previous">
+											<span aria-hidden="true">&laquo;</span>
+											<span class="sr-only">Previous</span>
+										</a>
+									</li>
+									<li class="page-item"><a class="page-link" href="#">1</a></li>
+									<li class="page-item active"><a class="page-link" href="#">2</a></li>
+									<li class="page-item"><a class="page-link" href="#">3</a></li>
+									<li class="page-item">
+										<a class="page-link" href="#" aria-label="Next">
+											<span aria-hidden="true">&raquo;</span>
+											<span class="sr-only">Next</span>
+										</a>
+									</li>
+								</ul>
+							</nav>
+						</div>
+						<!-- pagination -->
+
+					</div>
+					<div class="col-lg-4">
+						<div class="sidebar">
+
+							<% if (cartItems.length===0) { %>
+
+
+
+								<% } else { %>
+
+									<div class="widget disclaimer">
+										<h5 class="widget-header">Price Details</h5>
+										<% let totalAmount=0; %>
+
+
+											<ul class="price-list">
+
+												<% cartItems.reverse().forEach((item)=> { %>
+													<li>
+														<span class="item-info">Price(<%= item.quantity %> items) <%=
+																	item.product.name %></span>
+														<span class="item-price"><strong>&#8377;<%= item.quantity *
+																	item.product.price %>.0</strong></span>
+													</li>
+													<% totalAmount +=item.quantity * item.product.price; %>
+														<% }); %>
+
+															<li class="widget-cart-total">
+																<span class="item-info">Delivery Charges</span>
+																<span class="item-price"
+																	style="color: green;"><strong>Free</strong></span>
+															</li>
+
+															<li class="total-amount">
+																<span class="item-info">Total Amount</span>
+																<span class="item-price"><strong>&#8377;<%= totalAmount
+																			%>.0</strong></span>
+															</li>
+											</ul>
+
+
+
+
+
+
+									</div>
+
+
+									<!-- Dashboard Links -->
+									<div class="widget user-dashboard-menu">
+
+										<ul>
+
+											<li class="active">
+												<a href="/proceedToCheckOut"><i class="fa fa-bookmark-o"></i>
+													Proceed To CheckOut </a>
+											</li>
+
+
+										</ul>
+										<% } %>
+									</div>
+
+									<!-- delete-account modal -->
+									<!-- delete account popup modal start-->
+									<!-- Modal -->
+									<div class="modal fade" id="deleteaccount" tabindex="-1" role="dialog"
+										aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+										<div class="modal-dialog modal-dialog-centered" role="document">
+											<div class="modal-content">
+												<div class="modal-header border-bottom-0">
+													<button type="button" class="close" data-dismiss="modal"
+														aria-label="Close">
+														<span aria-hidden="true">&times;</span>
+													</button>
+												</div>
+												<div class="modal-body text-center">
+													<img src="/user_public/images/account/Account1.png"
+														class="img-fluid mb-2" alt="">
+													<h6 class="py-2">Are you sure you want to delete your account?</h6>
+													<p>Do you really want to delete these records? This process cannot
+														be
+														undone.
+													</p>
+													<textarea class="form-control" name="message" id="" cols="40"
+														rows="4" class="w-100 rounded"></textarea>
+												</div>
+												<div class="modal-footer border-top-0 mb-3 mx-5 justify-content-center">
+													<button type="button" class="btn btn-primary"
+														data-dismiss="modal">Cancel</button>
+													<button type="button" class="btn btn-danger">Delete</button>
+												</div>
+											</div>
+										</div>
+									</div>
+									<!-- delete account popup modal end-->
+									<!-- delete-account modal -->
+
+						</div>
+					</div>
+				</div>
+				<!-- Row End -->
+			</div>
+			<!-- Container End -->
+		</section>
+
+
+
+
+
+
+
+
+
+		<%- include("partials/footerCategory") %>
+			<!-- SweetAlert JS -->
+			<script>
+				function validateQuantity(input) {
+					// Parse the input value as a float
+					const value = parseFloat(input.value);
+					if (value === 0 || value < 0 || isNaN(value) || !Number.isInteger(value)) {
+						input.value = 1;
+						Swal.fire('Invalid Quantity', 'Please enter a valid quantity.', 'warning');
+					}
+				}
+			</script>
+ <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+			<script>
+				$(document).ready(function () {
+					// Increment quantity
+					$('.increment-btn').click(function () {
+						var itemId = $(this).data('item-id');
+						var quantityInput = $(this).siblings('.quantity-input');
+						var quantity = parseInt(quantityInput.val());
+						quantityInput.val(quantity + 1);
+					});
+
+					// Decrement quantity
+					$('.decrement-btn').click(function () {
+						var itemId = $(this).data('item-id');
+						var quantityInput = $(this).siblings('.quantity-input');
+						var quantity = parseInt(quantityInput.val());
+						if (quantity > 1) {
+							quantityInput.val(quantity - 1);
+						}
+					});
+
+					// Update quantity
+					$('.update-quantity-btn').click(function () {
+						var itemId = $(this).data('item-id');
+						var quantity = $(this).siblings('.quantity-input').val();
+
+						// Send AJAX request to update the quantity
+						$.ajax({
+							url: '/cart/update-quantity',
+							method: 'POST',
+							data: { itemId: itemId, quantity: quantity },
+							success: function (response) {
+								// Update the quantity display on success
+								$('.quantity-display[data-item-id="' + itemId + '"]').text('Quantity: ' + quantity);
+								// $('.item-info').text(quantity)
+
+
+							},
+							error: function (error) {
+								console.error('Error updating quantity:', error);
+							}
+						});
+
+					});
+
+
+
+
+
+
+
+					// Delete item
+					$('.delete-btn').click(function () {
+						var itemId = $(this).data('item-id');
+						var deleteButton = $(this); // Store the button element reference
+
+						// Send AJAX request to delete the cart item
+						$.ajax({
+							url: '/cart/delete-item/' + itemId,
+							method: 'DELETE',
+							success: function (response) {
+								// Remove the deleted item from the page
+								deleteButton.closest('tr').remove();
+
+								// Check if the cart is empty
+								if ($('.delete-btn').length === 0) {
+									$('.cart-table').append('<tr><td colspan="4">Your cart is empty.</td></tr>');
+								}
+							},
+							error: function (error) {
+								console.error('Error deleting cart item:', error);
+							}
+						});
+					});
+				});
+
+
+
+
+			</script>
+			<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
+			
+			<%- include("partials/footer") %>

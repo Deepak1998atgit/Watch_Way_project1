@@ -1,0 +1,104 @@
+<%- include("partials/header") %>
+    <div class="container-scroller">
+        <!-- partial:partials/_sidebar.html -->
+        <%- include("partials/sidebar") %>
+            <!-- partial -->
+            <div class="container-fluid page-body-wrapper">
+                <!-- partial:partials/_navbar.html -->
+                <%- include("partials/navbar") %>
+                    <div class="container-fluid page-body-wrapper-lg">
+                        <!-- partial -->
+                        <div class="main-panel">
+
+                            <div class="row ">
+                                <div class="col-12 grid-margin">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h4 class="card-title">User Management</h4>
+
+
+                                            <div class="table-responsive">
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th> No</th>
+                                                            <th> User Name </th>
+                                                            <th> Email </th>
+                                                            <th> Phone </th>
+                                                            <th> Action </th>
+
+
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <% user_data.forEach(function(user,index) { %>
+                                                            <tr>
+                                                                <td>
+                                                                    <%= index+1 %>
+                                                                </td>
+                                                                <td>
+                                                                    <%= user.name %>
+                                                                </td>
+                                                                <td>
+                                                                    <%= user.email %>
+                                                                </td>
+                                                                <td>
+                                                                    <%= user.phone %>
+                                                                </td>
+                                                                <td>
+                                                                    <% if (user.isBlocked) { %>
+                                                                        <form action="/unBlockUser/<%= user._id %>" method="get" class="link-button">
+                                                                            <button type="submit" class="btn btn-success btn-fw">Unblock</button>
+                                                                          </form>
+                                                                        
+                                                                         
+                                                                          
+                                                                        
+                                                                      <% } else { %>
+                                                                        <form action="/blockUser/<%= user._id %>" method="get" class="link-button">
+                                                                            <button type="submit" class="btn btn-danger btn-fw">Block</button>
+                                                                          </form>
+                                                                      
+                                                                          
+                                                                        
+                                                                      <% } %>
+                                                                      
+
+                                                                </td>
+
+
+
+                                                            </tr>
+                                                            <% }) %>
+
+                                                                <tr>
+                                                                    <td>
+
+                                                                    </td>
+                                                                    <td> </td>
+                                                                    <td> </td>
+                                                                    <td> </td>
+                                                                    <td> </td>
+
+
+
+                                                                </tr>
+
+
+
+
+
+
+
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <%- include("partials/footer") %>
+
+                        </div>

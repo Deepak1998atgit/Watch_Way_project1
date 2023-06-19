@@ -1,0 +1,207 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .height-100 {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .card {
+            width: 400px;
+            border: none;
+            height: 300px;
+            box-shadow: 0px 5px 20px 0px #d2dae3;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .card h6 {
+            color: red;
+            font-size: 20px;
+        }
+
+        .inputs input {
+            width: 40px;
+            height: 40px;
+            margin: 5px;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        .validate {
+            border-radius: 20px;
+            height: 40px;
+            background-color: red;
+            border: 1px solid red;
+            width: 140px;
+            margin-top: 10px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container height-100">
+        <div class="position-relative">
+            <div class="card p-2 text-center">
+                <h6>Please enter the one-time password <br> to verify your account</h6>
+                <div> <span>A code has been sent to</span> <small>*******9897</small> </div>
+                <div id="otp" class="inputs d-flex flex-row justify-content-center mt-2"> 
+                    <input class="m-2 text-center form-control rounded" type="text" id="first" maxlength="1" /> 
+                    <input class="m-2 text-center form-control rounded" type="text" id="second" maxlength="1" /> 
+                    <input class="m-2 text-center form-control rounded" type="text" id="third" maxlength="1" /> 
+                    <input class="m-2 text-center form-control rounded" type="text" id="fourth" maxlength="1" /> 
+                    <input class="m-2 text-center form-control rounded" type="text" id="fifth" maxlength="1" /> 
+                    <input class="m-2 text-center form-control rounded" type="text" id="sixth" maxlength="1" /> 
+                </div>
+                <div class="mt-4"> 
+                    <button class="btn btn-danger px-4 validate">Validate</button> 
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function (event) {
+            function OTPInput() {
+                const inputs = document.querySelectorAll('#otp > *[id]');
+                for (let i = 0; i < inputs.length; i++) {
+                    inputs[i].addEventListener('input', function (event) {
+                        if (event.target.value.length >= 1) {
+                            if (i !== inputs.length - 1) inputs[i + 1].focus();
+                        }
+                    });
+                    inputs[i].addEventListener('keydown', function (event) {
+                        if (event.key === "Backspace") {
+                            if (i !== 0) {
+                                inputs[i].value = '';
+                                inputs[i - 1].focus();
+                            }
+                        }
+                    });
+                }
+            }
+            OTPInput();
+        });
+    </script>
+</body>
+
+</html> -->
+<%- include("partials/header") %>
+
+
+    <header>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <nav class="navbar navbar-expand-lg navbar-light navigation">
+                        <a class="navbar-brand" href="index.html">
+                            <img src="/user_public/images/logo.png" alt="" style="height:35px;width:216px;">
+                        </a>
+                        <button class="navbar-toggler" type="button" data-toggle="collapse"
+                            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="login py-4 border-top-1 bg-gray" style="background-image: url('/user_public/images/otp/otpBackground.jpg');  background-size: cover;
+background-position: center;
+height: 100vh; /* Adjust the height to your preference */
+width: 100vw; ">
+
+        <div class="container">
+
+            <div class="row justify-content-center">
+                <div class="col-lg-4 col-md-4 align-item-center">
+                    <div class="border bg-gray " style="border-radius: 30px;">
+                        <div class="d-flex bg-info justify-content-center" style="border-radius: 30px 30px 0 0;">
+                            <h3 class=" p-4 text-white">Login with OTP</h3>
+                        </div>
+                        <form id="send-otp-form" action="/sendOtp" method="post">
+                            <fieldset class="p-4">
+                              <input class="form-control mb-3" type="tel" name="phone" id="phone" placeholder="Phone">
+                              <button type="submit" class="btn btn-outline-info btn-lg btn-block font-weight-bold mt-3" style="border-radius: 30px;">Send OTP</button>
+                            </fieldset>
+                          </form>
+                          
+                          <!-- verify OTP form -->
+                          <form id="verify-otp-form" action="/verifyOtp" method="post">
+                            <fieldset class="p-4">
+                              <input type="hidden" name="hphone" id="verify-phone" />
+                              <input class="form-control mb-3" type="password" name="otp" placeholder="OTP Enter">
+                              <input class="form-control mb-3" type="password" name="newPassword" placeholder="New Password">
+                              <input class="form-control mb-3" type="password" name="confirmPassword" placeholder="Confirm Password">
+                              <button type="submit" class="btn btn-outline-info btn-lg btn-block font-weight-bold mt-3" style="border-radius: 30px;">Verify OTP</button>
+                            </fieldset>
+                          </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+
+    <footer class="footer section section-sm">
+        <!-- Footer content goes here -->
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+          // Store the phone number value
+          let phoneNumber = '';
+      
+          // Add event listener to the send OTP form submission
+          document.getElementById('send-otp-form').addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent the default form submission
+      
+            // Get the phone number value from the send OTP form
+            phoneNumber = document.getElementById('phone').value;
+            console.log(phoneNumber, "Sent OTP");
+      
+            // Submit the send OTP form
+            this.submit();
+          });
+      
+          // Add event listener to the verify OTP form submission
+          document.getElementById('verify-otp-form').addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent the default form submission
+      
+            // Populate the phone number in the hidden input field of the verify OTP form
+            document.getElementById('verify-phone').value = phoneNumber;
+            console.log(phoneNumber, "Verified OTP");
+      
+            // Submit the verify OTP form
+            this.submit();
+          });
+        });
+      </script>
+
+
+
+
+
+
+
+
+
+
+    <%- include("partials/footer") %>

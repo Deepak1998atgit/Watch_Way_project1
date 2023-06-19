@@ -1,0 +1,113 @@
+<%- include("partials/header") %>
+
+<header>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <nav class="navbar navbar-expand-lg navbar-light navigation">
+                    <a class="navbar-brand" href="index.html">
+                        <img src="/user_public/images/logo.png" alt="" style="height:35px;width:216px;">
+                    </a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse"
+                        data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+<section class="login py-5 border-top-1">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-5 col-md-8 align-item-center">
+                <div class="border border">
+                    <h3 class="bg-gray p-4">Sign Up</h3>
+                    <form action="/userSignUp" method="post" name="loginForm" onsubmit="return validateForm()">
+                        <fieldset class="p-4">
+                            <input class="form-control mb-3" type="text" name="name" id="name" placeholder="Name">
+                            <input class="form-control mb-3" type="email" name="email" id="email" placeholder="Email">
+                            <input class="form-control mb-3" type="tel" name="phone" id="phone" placeholder="Phone">
+                            <input class="form-control mb-3" type="password" name="password" placeholder="Password">
+                            <input class="form-control mb-3" type="password" name="confirmPassword" placeholder="Confirm Password">
+                            <div class="loggedin-forgot d-inline-flex my-3">
+                                <label for="registering" class="px-2">By registering, you accept our <a
+                                        class="text-primary font-weight-bold" href="terms-condition.html">Terms & Conditions</a></label>
+                            </div>
+                            <button type="submit" class="btn btn-primary font-weight-bold mt-3">Register Now</button>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer class="footer section section-sm">
+    <!-- Footer content goes here -->
+</footer>
+
+<script>
+    setTimeout(() => {
+        document.getElementById("msg").style.display = "none";
+    }, 1000);
+
+    function validateForm() {
+        var name = document.forms["loginForm"]["name"].value.trim();
+        var email = document.forms["loginForm"]["email"].value.trim();
+        var password = document.forms["loginForm"]["password"].value;
+        var phone = document.forms["loginForm"]["phone"].value;
+        var confirmPassword = document.forms["loginForm"]["confirmPassword"].value;
+
+        if (
+            name === "" ||
+            email === "" ||
+            password === "" ||
+            phone === "" ||
+            confirmPassword === ""
+        ) {
+            alert("Please fill in all fields.");
+            return false;
+        }
+
+        // Validate email
+        var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            alert("Invalid email address.");
+            return false;
+        }
+
+              // Validate name
+              var nameRegex = /^[A-Za-z\s]+$/;
+        if (!nameRegex.test(name)) {
+            alert("Name should only contain letters and spaces.");
+            return false;
+        }
+
+        // Validate phone
+        var phoneRegex = /^\d{10}$/;
+        if (!phoneRegex.test(phone)) {
+            alert("Phone should only contain numbers and be 10 digits.");
+            return false;
+        }
+
+        // Validate password
+        if (password.length < 8) {
+            alert("Password should be at least 8 characters long.");
+            return false;
+        }
+
+        // Validate confirm password
+        if (password !== confirmPassword) {
+            alert("Passwords do not match.");
+            return false;
+        }
+
+        return true;
+    }
+</script>
+
+<%- include("partials/footer") %>
+
