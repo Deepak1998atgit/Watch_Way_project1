@@ -1,0 +1,235 @@
+<%- include("partials/header") %>
+
+    <%- include("partials/navbar") %>
+
+        <style>
+            .popup {
+                display: none;
+                position: fixed;
+                z-index: 9999;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.4);
+                overflow: auto;
+            }
+
+            .popup-content {
+                background-color: #fefefe;
+                margin: 20% auto;
+                padding: 20px;
+                border: 1px solid #888;
+                width: 300px;
+                text-align: center;
+            }
+
+            .close {
+                color: #aaa;
+                float: right;
+                font-size: 28px;
+                font-weight: bold;
+                cursor: pointer;
+            }
+
+            .close:hover,
+            .close:focus {
+                color: black;
+                text-decoration: none;
+            }
+
+            #cancelConfirmBtn {
+                background-color: #4CAF50;
+                color: white;
+                border: none;
+                padding: 8px 16px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 14px;
+                cursor: pointer;
+            }
+
+            #cancelConfirmBtn:hover {
+                background-color: #45a049;
+            }
+        </style>
+
+        <div class="category-search-filter">
+            <div class="row">
+                <div class="col-md-6 text-center text-md-left">
+
+                </div>
+                <div class="col-md-6 text-center text-md-right mt-2 mt-md-0">
+                    <div class="view">
+                        <strong></strong>
+                        <ul class="list-inline view-switcher">
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ad listing list  -->
+        <div class="row">
+            <div class="col-md-8">
+                <% orders.items.forEach(item=> { %>
+                    <div class="ad-listing-list mt-20 my-5 mx-5">
+
+                        <div class="row p-lg-3 p-sm-5 p-4 ">
+                            <div class="col-lg-4 align-self-center">
+                                <a href="single.html">
+                                    <img src="/<%= item.product.photo[0] %>" style="width: 145px;height: 175px;"
+                                        class="img-fluid" alt="">
+                                </a>
+                            </div>
+                            <div class="col-lg-6 my-4">
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-10">
+                                        <div class="ad-listing-content">
+                                            <div>
+                                                <a href="single.html" class="font-weight-bold">
+                                                    <%= item.product.name %>
+                                                </a>
+                                            </div>
+                                            <ul class="list-inline mt-2 mb-3">
+                                                <li class="list-inline-item"><a href="category.html"> <i
+                                                            class="fa fa-folder-open-o"></i>
+                                                        <%= item.product.category_name %>
+                                                    </a></li>
+                                                <li class="list-inline-item"><a href="category.htm"><i
+                                                            class="fa fa-calendar"></i>
+                                                        <%= orders.createdAt.toLocaleDateString() %>
+                                                    </a></li>
+                                                <li><span class="text-dark">Qty:<%= item.quantity %></span>
+
+                                                </li>
+
+
+                                            </ul>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 align-self-center">
+                                        <div class="product-ratings float-lg-right pb-3">
+                                            <span class="text-success"><span class="text-dark">Price:</span>
+                                                <%= item.product.price %>.0/-
+                                            </span>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <% }) %>
+            </div>
+            <div class="col-md-4 my-5">
+                <div>
+                    <h3>Order Details</h3>
+                    <ul style="list-style: none; border-style: dashed;">
+                        <li>Order Id:<%= orders._id %>
+                        </li>
+                        <li>Status:<%= orders.status %>
+                        </li>
+
+                        <li>Payment Method:<%= orders.paymentMethod %>
+                        </li>
+                        <li>Total:<%= orders.total %>.0/-</li>
+
+                    </ul>
+                </div>
+                <div class="my-4">
+                    <h3>Billing Details</h3>
+                    <ul style="list-style: none; border-style: dashed;">
+                        <li></li>
+                        <li>Name:<%= orders.name %>
+                        </li>
+                        <li>Address:<%= orders.address %>
+                        </li>
+                        <li>Place:<%= orders.city %>
+                        </li>
+                        <li>State:<%= orders.state %>
+                        </li>
+                        <li>Pincode:<%= orders.zipCode %>
+                        </li>
+                        <li>phone:<%= orders.phone %>
+                        </li>
+                    </ul>
+
+                </div>
+                <a class="btn btn-primary" href="/invoices/<%= orders._id %>">Download Invoice</a>
+                <% if(locals.orders.status==="Cancelled" ){ %>
+                    <% } else { %>
+                        <a class="btn btn-danger" id="cancelOrderBtn" href="#">Cancel Order</a>
+                        <!-- Popup -->
+                        <div id="cancelPopup" class="popup">
+                            <div class="popup-content">
+                                <span class="close">&times;</span>
+                                <h3>Confirmation</h3>
+                                <p>Are you sure you want to cancel the order?</p>
+                                <form action="/cancelOrder/<%= orders._id %>" method="post">
+                                    <label for="reason" style="display: inline-block;">Reason</label>
+                                    <input type="text" id="reason" name="reason" style="display:block;width: 100%;">
+                                    <button id="cancelConfirmBtn" class="my-2" type="submit">Confirm</button>
+                                </form>
+                            </div>
+                        </div>
+                        <% } %>
+
+
+
+
+
+
+            </div>
+        </div>
+
+
+
+
+        
+
+
+
+            <script>
+                const cancelOrderBtn = document.getElementById("cancelOrderBtn");
+                const cancelPopup = document.getElementById("cancelPopup");
+                const closePopupBtn = cancelPopup.querySelector(".close");
+                const confirmBtn = cancelPopup.querySelector("#cancelConfirmBtn");
+
+                cancelOrderBtn.addEventListener("click", function () {
+                    cancelPopup.style.display = "block";
+                });
+
+                closePopupBtn.addEventListener("click", function () {
+                    cancelPopup.style.display = "none";
+                });
+
+                confirmBtn.addEventListener("click", function () {
+                    // Perform the cancel order action here
+                    // ...
+
+                    // Close the popup
+                    cancelPopup.style.display = "none";
+                });
+            </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <%- include("partials/footer") %>

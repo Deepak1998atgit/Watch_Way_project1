@@ -1,0 +1,596 @@
+<%- include("partials/header") %>
+
+    <%- include("partials/navbar",{user:user,CartLength:CartLength}) %>
+        <style>
+            .launch {
+                height: 50px
+            }
+
+            .close {
+                font-size: 21px;
+                cursor: pointer
+            }
+
+            .modal-body {
+                height: 450px
+            }
+
+            .nav-tabs {
+                border: none !important
+            }
+
+            .nav-tabs .nav-link.active {
+                color: #495057;
+                background-color: #fff;
+                border-color: #ffffff #ffffff #fff;
+                border-top: 3px solid blue !important
+            }
+
+            .nav-tabs .nav-link {
+                margin-bottom: -1px;
+                border: 1px solid transparent;
+                border-top-left-radius: 0rem;
+                border-top-right-radius: 0rem;
+                border-top: 3px solid #eee;
+                font-size: 20px
+            }
+
+            .nav-tabs .nav-link:hover {
+                border-color: #e9ecef #ffffff #ffffff
+            }
+
+            .nav-tabs {
+                display: table !important;
+                width: 100%
+            }
+
+            .nav-item {
+                display: table-cell
+            }
+
+            .form-control {
+                border-bottom: 1px solid #eee !important;
+                border: none;
+                font-weight: 600
+            }
+
+            .form-control:focus {
+                color: #495057;
+                background-color: #fff;
+                border-color: #8bbafe;
+                outline: 0;
+                box-shadow: none
+            }
+
+            .inputbox {
+                position: relative;
+                margin-bottom: 20px;
+                width: 100%
+            }
+
+            .inputbox span {
+                position: absolute;
+                top: 7px;
+                left: 11px;
+                transition: 0.5s
+            }
+
+            .inputbox i {
+                position: absolute;
+                top: 13px;
+                right: 8px;
+                transition: 0.5s;
+                color: #3F51B5
+            }
+
+            input::-webkit-outer-spin-button,
+            input::-webkit-inner-spin-button {
+                -webkit-appearance: none;
+                margin: 0
+            }
+
+            .inputbox input:focus~span {
+                transform: translateX(-0px) translateY(-15px);
+                font-size: 12px
+            }
+
+            .inputbox input:valid~span {
+                transform: translateX(-0px) translateY(-15px);
+                font-size: 12px
+            }
+
+            .pay button {
+                height: 47px;
+                border-radius: 37px
+            }
+        </style>
+        <style>
+            .coupon {
+                border-radius: 12px;
+                box-shadow: 5px 8px 10px #d6d5d533
+            }
+
+
+
+            .code:hover {
+                background: #0D6EFD;
+                color: #fff;
+                cursor: pointer
+            }
+
+            .code:before {
+                content: "click";
+                color: black;
+
+            }
+
+            .code:hover:before {
+                content: "";
+            }
+        </style>
+
+
+        <div class="container ">
+            <div class="row my-5">
+
+                <div class="widget welcome-message shadow-lg col-lg-8  ">
+                    <% if(payable) { %>
+                        <div class="alert alert-success col-lg-12" id="successMessage">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                                <path
+                                    d="M8 0A8 8 0 1 0 8 16A8 8 0 1 0 8 0ZM6.5 11L3.5 8L5 7.5L6.5 9L10.5 5L12 6.5L6.5 11Z" />
+                            </svg>
+                            Coupon Added SuccessFully!!
+                        </div>
+                        <script>
+                            // Delay in milliseconds (3 seconds)
+                            var delay = 3000;
+
+                            // Function to hide the success message
+                            function hideSuccessMessage() {
+                                var successMessage = document.getElementById('successMessage');
+                                successMessage.style.display = 'none';
+                            }
+
+                            // Wait for the specified delay and hide the success message
+                            setTimeout(hideSuccessMessage, delay);
+                        </script>
+                        <% } %>
+                            <% if(message) { %>
+                                <div class="alert alert-danger col-lg-12" id="errorMessage">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                        class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+                                        <path
+                                            d="M8 0A8 8 0 1 0 8 16A8 8 0 1 0 8 0ZM10.354 11.646L8 9.293L5.646 11.646L4.354 10.354L6.707 8L4.354 5.646L5.646 4.354L8 6.707L10.354 4.354L11.646 5.646L9.293 8L11.646 10.354L10.354 11.646Z" />
+                                    </svg>
+                                    <%= message %>
+                                </div>
+                                <script>
+                                    // Delay in milliseconds (3 seconds)
+                                    var delay = 3000;
+
+                                    // Function to hide the success message
+                                    function hideSuccessMessage() {
+                                        var successMessage = document.getElementById('errorMessage');
+                                        successMessage.style.display = 'none';
+                                    }
+
+                                    // Wait for the specified delay and hide the success message
+                                    setTimeout(hideSuccessMessage, delay);
+                                </script>
+                                <% } %>
+
+                                    <h3>Shipping Address</h3>
+                                    <div class="widget welcome-message shadow col-lg-6"
+                                        style="list-style: none; border-style: dashed;">
+
+
+                                        <h4>
+                                            <%= address.name %> ,<br>
+                                                <%= address.address %>,<br>
+                                                    <%= address.place %> , <br>
+                                                        <%= address.state %> ,
+                                                            <%= address.pincode %> , <br>
+                                                                <%= address.phone %>.
+                                        </h4>
+
+
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <% let count=0 %>
+                                            <% if(couponDetail){ %>
+
+                                                <% couponDetail.forEach((coupon,index)=> { %>
+                                                    <% coupon.coupon.forEach((item)=> { %>
+                                                        <% if (item.active) { %>
+                                                            <h4>Coupens</h4>
+                                                            <div class="coupon shadow p-3 my-2 bg-white">
+                                                                <div class="row no-gutters">
+                                                                    <div class="col-md-4 border-right">
+                                                                        <div
+                                                                            class="d-flex flex-column align-items-center">
+                                                                            <span class="text-black-50">Coupon <%=
+                                                                                    ++count %></span>
+                                                                            <img src="/admin_public/assets/images/logo.jpg"
+                                                                                style="width:176px;"><span
+                                                                                class="d-block text-dark">Shopping
+                                                                                Now!!!!</span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-8">
+                                                                        <div>
+                                                                            <div
+                                                                                class="d-flex flex-row justify-content-end off ">
+                                                                                <h1 class="text-danger">
+                                                                                    <%= item.percentageOff %>%
+                                                                                </h1><span class="text-dark">OFF</span>
+                                                                                <h2 class="text-success mx-3">on ₹<%=
+                                                                                        item.thresholdAmount %>.0/-</h2>
+                                                                            </div>
+                                                                            <div
+                                                                                class="justify-content-between off px-3 mx-1 p-2">
+                                                                                <span class="text-dark">Promo
+                                                                                    code:</span><span
+                                                                                    class="border border-primary px-3 rounded code text-white mx-3">
+                                                                                    <%= item.promoCode %>
+                                                                                </span>
+
+
+                                                                            </div>
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <% } %>
+                                                                <% }); %>
+                                                                    <% }); %>
+                                                                        <% } else { %>
+                                                                            <h1>Add Coupon</h1>
+                                                                            <% } %>
+
+
+                                    </div>
+
+                                    <% if (!cartProducts) { %>
+
+                                        <% } else {%>
+                                            <div class="col-lg-12 d-flex  justify-content-center my-5">
+                                                <button type="button" class="btn btn-primary launch" data-toggle="modal"
+                                                    data-target="#staticBackdrop"> <i class="fa fa-rocket"></i> Pay Now
+                                                </button>
+                                                <!-- Modal -->
+                                                <div class="modal fade " id="staticBackdrop" data-backdrop="static"
+
+                                                    data-keyboard="false" tabindex="-1"
+                                                    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                                    
+                                                    <div class="modal-dialog modal-lg">
+                                                        
+                                                        <div class="modal-content ">
+                                                            
+                                                            
+
+                                                            <div class="text-right"> <i class="fa fa-close close" data-dismiss="modal"></i>
+                                                                
+                                                            </div>
+                                                            <div class="tabs mt-3">
+                                                                
+                                                                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                                                    <li class="nav-item" role="presentation"> <a
+                                                                            class="nav-link active" id="visa-tab"
+                                                                            data-toggle="tab" href="#visa" role="tab"
+                                                                            aria-controls="visa" aria-selected="true">
+                                                                            <img width="80">
+                                                                        </a> </li>
+                                                                    <li class="nav-item" role="presentation"> <a
+                                                                            class="nav-link" id="paypal-tab"
+                                                                            data-toggle="tab" href="#paypal" role="tab"
+                                                                            aria-controls="paypal"
+                                                                            aria-selected="false"> <img width="80">
+                                                                        </a> </li>
+                                                                    <li class="nav-item" role="presentation"> <a
+                                                                            class="nav-link" id="razorpay-tab"
+                                                                            data-toggle="tab" href="#razorpay"
+                                                                            role="tab" aria-controls="razorpay"
+                                                                            aria-selected="true">
+                                                                            <img width="80">
+                                                                        </a> </li>
+
+                                                                </ul>
+                                                                <div class="tab-content" id="myTabContent">
+                                                                    
+                                                                    <div class="tab-pane fade show active" id="visa"
+                                                                        role="tabpanel" aria-labelledby="visa-tab">
+                                                                        <div>
+                                                                            <div class="text-center">
+
+                                                                                <img style="width: 262px;height: 161px;"
+                                                                                    src="/user_public/images/codimage.png"
+                                                                                    alt="">
+                                                                            </div>
+                                                                            <div class="form mt-5 px-5">
+                                                                                <!-- <div class="inputbox"> <input type="text" name="name"
+                                                                class="form-control" required="required">
+                                                            <span>Cardholder Name</span> </div>
+                                                        <div class="inputbox"> <input type="text" name="name" min="1"
+                                                                max="999" class="form-control" required="required">
+                                                            <span>Card Number</span>
+                                                            <i class="fa fa-eye"></i>
+                                                        </div>
+                                                        <div class="d-flex flex-row">
+                                                            <div class="inputbox"> <input type="text" name="name"
+                                                                    min="1" max="999" class="form-control"
+                                                                    required="required"> <span>Expiration
+                                                                    Date</span> </div>
+                                                            <div class="inputbox"> <input type="text" name="name"
+                                                                    min="1" max="999" class="form-control"
+                                                                    required="required"> <span>CVV</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="px-5 pay"> <button
+                                                                class="btn btn-success btn-block">Add
+                                                                card</button> </div> -->
+                                                                                <div class="my-5" style="   display: flex;
+                                                    justify-content: center;
+                                                    align-items: center;">
+                                                                                    <a href="/proceedToCod/<%= address._id %>"
+                                                                                        class="btn btn-primary col-lg-5 my-5">Proceed</a>
+
+
+                                                                                </div>
+
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="tab-pane fade" id="paypal"
+                                                                        role="tabpanel" aria-labelledby="paypal-tab">
+                                                                        <div class="text-center">
+
+                                                                            <img src="/user_public/images/paypal.png"
+                                                                                style="width: 262px;height: 161px;"
+                                                                                alt="">
+                                                                        </div>
+
+                                                                        <div class="my-5" style="   display: flex;
+                                            justify-content: center;
+                                            align-items: center;">
+
+                                                                            <a href="/proceedToPayPal/<%= address._id %>"
+                                                                                class="btn btn-primary my-5  col-lg-5">
+                                                                                Pay Now</a>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="tab-pane fade" id="razorpay"
+                                                                        role="tabpanel" aria-labelledby="razorpay-tab">
+                                                                        <div class="text-center">
+                                                                            <img src="/user_public/images/sucess.png"
+                                                                                style="width: 262px;height: 161px;"
+                                                                                alt="">
+
+                                                                        </div>
+
+                                                                        <div class=" my-5" style="   display: flex;
+                                            justify-content: center;
+                                            align-items: center;">
+                                                                            <a href="/proceedToRazorpay/<%= address._id %>"
+                                                                                id="proceedBtn"
+                                                                                class="btn btn-primary col-lg-5 my-5">Pay
+                                                                                Now</a>
+
+
+
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <% } %>
+
+
+                </div>
+                <div class="widget disclaimer col-lg-4">
+                    <% let totalAmount=0; %>
+                        <% if (!cartProducts) { %>
+                            <img src="/user_public/images/cartimage.jpg" style="width: 490px;" alt="">
+                            <% } else { %>
+                                <% cartProducts.cartItems.forEach((item)=> { %>
+                                    <ul class="price-list">
+                                        <li>
+                                            <img src="/<%= item.product.photo[0] %>" style="height:111px;width: 99px;">
+                                            <p>
+                                                <strong>
+                                                    <%= item.product.name %>
+                                                </strong>
+                                            </p>
+                                        </li>
+                                        <li>
+                                            <span class="item-info">Price(<%= item.quantity %>)Item</span>
+                                            <span class="item-price"><strong>&#8377;<%= item.quantity *
+                                                        item.product.price %>
+                                                        .0</strong></span>
+                                            <% totalAmount +=item.quantity * item.product.price; %>
+                                        </li>
+                                        <% }); %>
+                                            <li class="widget-cart-total">
+                                                <span class="item-info">Delivery Charges</span>
+                                                <span class="item-price"
+                                                    style="color: green;"><strong>Free</strong></span>
+                                            </li>
+                                            <li class="total-amount">
+                                                <% if (!wallet) { %>
+                                                    <span class="item-info">Total Amount</span>
+                                                    <% } %>
+
+
+                                                        <% if (payable) { %>
+                                                            <span class="item-price"><strong>&#8377;<%= payable %>
+                                                                </strong></span>
+
+
+
+                                                            <% }else if(wallet) { %>
+                                                                <h4 class="text-danger">Total:₹<%=totalAmount %>/-</h4>,
+                                                                <h4 class="text-success">Wallet:₹<%= wallet %>/-</h4>,
+                                                                <h4 class="text-dark">Payable:₹<%= totalAmount-wallet %>
+                                                                        /-</h4>
+                                                                <% } else { %>
+                                                                    <span class="item-price"><strong>&#8377;<%=
+                                                                                totalAmount %>
+                                                                        </strong></span>
+                                                                    <% } %>
+
+                                            </li>
+                                            <li class="total-amount">
+                                                <div class="widget">
+                                                    <form action="/redeemCoupon/<%= address._id %>" method="post">
+                                                        <label for="couponBox">Apply Coupon If Need</label>
+                                                        <input type="text" id="couponBox" name="promoCode"
+                                                            placeholder="Promo Code">
+
+                                                        <input type="hidden" value="<%= totalAmount %>" name="total">
+                                                        <button type="submit" class="btn-success my-2"
+                                                            style="display: inline-block; ">Redeem
+                                                            Now</button>
+                                                    </form>
+
+                                                </div>
+                                            </li>
+                                            <% if(walletAmount !== 0) { %>
+                                                <li class="total-amount">
+                                                    <div class="widget">
+                                                        <h4>Remain Wallet Amount:</h4>
+                                                        <h5>₹<%= walletAmount %>/-</h5>
+                                                        <form action="/walletApply/<%= address._id %>" method="post">
+    
+                                                            <input type="hidden" value="<%= totalAmount %>" name="total">
+                                                            <button type="submit" class="btn-success my-2"
+                                                                style="display: inline-block; ">Apply 10% Wallet</button>
+                                                        </form>
+                                                    </div>
+                                                </li>
+                                            <% } %>
+                                            
+                                    </ul>
+                                    <% } %>
+
+                </div>
+
+
+
+
+
+
+
+
+
+
+            </div>
+
+
+        </div>
+
+        </div>
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+        <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+        <script>
+
+        </script>
+        <script>
+            $(document).ready(function () {
+                // Attach click event handler to the "Proceed" button
+                $('#proceedBtn').click(function (event) {
+                    event.preventDefault(); // Prevent the default link behavior
+
+                    // Retrieve the href attribute of the link
+                    var url = $(this).attr('href');
+                    console.log(url);
+                    console.log("jjj")
+
+                    // Perform AJAX request
+                    $.ajax({
+                        url: url,
+                        method: 'GET',
+                        success: function (response) {
+                            // Handle the successful response
+                            console.log(response);
+                            console.log("jjj")
+                            if (response.success) {
+                                var options = {
+                                    "key": "rzp_test_7xjcRRBw4Z5vNX", // Enter the Key ID generated from the Dashboard
+                                    "amount": 1000, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+                                    "currency": "INR",
+
+                                    "image": "https://example.com/your_logo",
+                                    "order_id": response.order_id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+                                    "handler": function (response) {
+                                        verifyPayment(response, options);
+                                    },
+
+                                    "prefill": { //We recommend using the prefill parameter to auto-fill customer's contact information especially their phone number
+                                        "name": "Gaurav Kumar", //your customer's name
+                                        "email": "gaurav.kumar@example.com",
+                                        "contact": "9074005616" //Provide the customer's phone number for better conversion rates 
+                                    },
+                                    "notes": {
+                                        "address": "Razorpay Corporate Office"
+                                    },
+                                    "theme": {
+                                        "color": "#3399cc"
+                                    }
+                                };
+
+                                // Do something with the response data
+                                var rzp1 = new Razorpay(options);
+                                rzp1.on('payment.success', function (response) {
+                                    // Handle the payment success event
+                                    console.log("Payment successful");
+                                    console.log(response);
+
+                                    // Show the success mark or perform any other action
+                                });
+
+                                rzp1.open();
+
+                                rzp1.open();
+
+                            }
+                            else {
+                                alert(res.msg);
+                            }
+
+
+
+
+                        },
+                        error: function (xhr, status, error) {
+                            // Handle the error response
+                            console.error(error);
+                        }
+
+                    });
+                });
+            });
+            function verifyPayment(response, options) {
+
+
+            }
+
+
+        </script>
+
+
+
+
+
+
+        <%- include("partials/footer") %>

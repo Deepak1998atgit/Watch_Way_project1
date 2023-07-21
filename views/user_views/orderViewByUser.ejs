@@ -1,0 +1,119 @@
+<%- include("partials/header") %>
+    <%- include("partials/navbar") %>
+
+        <section class="dashboard section">
+            <!-- Container Start -->
+            <div class="container">
+
+                <% if( locals.orders && locals.orders.length> 0 ) { %>
+                    <!-- Row Start -->
+                    <div class="row">
+                        <div class="col-lg-10 shadow" style="margin:auto">
+                            <!-- Recently Favorited -->
+                            <div class="widget dashboard-container my-adslist">
+
+                                <h3 class="widget-header">My Orders</h3>
+                                <table class="table table-responsive product-dashboard-table">
+                                    <thead class="delete delete-btn">
+                                        <tr>
+                                            <th>Image</th>
+                                            <th>Product Quantity Details</th>
+                                            <th class="text-center">Total</th>
+                                            <th class="text-center">Status</th>
+                                            <th class="text-center">View Order</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+
+                                        <% orders.reverse().forEach(order=> { %>
+
+                                            <tr>
+
+                                                <td class="product-thumb">
+                                                    <% order.items.forEach(item=> { %>
+
+
+
+                                                        <img src="/<%= item.product?.photo[0] %>" class="my-3" style=" width:116px;
+                                                    height:123px;
+                                                    display: block;
+                                                   
+                                                    border-radius:10px;">
+
+
+
+                                                        <% }) %>
+
+
+                                                </td>
+                                                <td class="product-details">
+                                                    <% order.items.forEach(item=> { %>
+                                                        <h3 class="title my-3">
+                                                            <%= item.product?.name %>
+                                                        </h3>
+                                                        <span><strong>Price: </strong>₹<%= item.product?.price %>
+                                                                /-</span>
+                                                        <span class="status active"><strong>Qty:</strong>X<%=
+                                                                item.quantity %></span>
+                                                        <span><strong>Order on: </strong><time>
+                                                                <%= order.createdAt.toLocaleDateString() %>
+                                                            </time> </span>
+                                                        <% }) %>
+
+
+
+
+                                                </td>
+                                                <td class="product-category">
+                                                    <span id="totalPrice">₹<%= order.total %>.0/-</span>
+                                                </td>
+                                                <td class="product-category">
+                                                    <span class="status active"><span class="text-danger">
+                                                            <%= order.status %>
+                                                        </span>
+                                                </td>
+                                                <td class="action" data-title="Action">
+                                                    <div>
+                                                        <ul class="list-inline justify-content-center">
+
+                                                            <li class="list-inline-item">
+                                                            <li class="list-inline-item">
+                                                                <a data-toggle="tooltip" data-placement="top"
+                                                                    title="View" class="view"
+                                                                    href="/viewOrderDetail/<%= order._id %>">
+                                                                    <i class="fa fa-eye"></i>
+                                                                </a>
+                                                            </li>
+
+                                                            </a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </td>
+
+                                            </tr>
+                                            <% }) %>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Row End -->
+                    <% } else { %>
+                        <!-- Row Start -->
+                        <div class="row justify-content-center align-items-center">
+                            <img src="/user_public/images/ordernot.png" alt="">
+                        </div>
+                        <!-- Row End -->
+                    <% } %>
+
+            </div>
+            <!-- Container End -->
+        </section>
+
+
+
+
+        <%- include("partials/footer") %>

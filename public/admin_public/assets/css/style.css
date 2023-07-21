@@ -20670,7 +20670,7 @@ div.tagsinput {
     flex-wrap: nowrap;
     flex-direction: column;
     margin-bottom: 60px;
-    padding-top: 70px; }
+    padding-top: 12px; }
     @media (max-width: 992px) {
       .sidebar .nav {
         padding-top: 0; } }
@@ -20854,8 +20854,8 @@ div.tagsinput {
               .sidebar .nav .nav-item.profile .profile-desc .dropdown-menu .dropdown-item.preview-item {
                 align-items: center; }
                 .sidebar .nav .nav-item.profile .profile-desc .dropdown-menu .dropdown-item.preview-item .preview-thumbnail .preview-icon {
-                  width: 30px;
-                  height: 30px; }
+                  width: 70px;
+                  height: 70px; }
                   .sidebar .nav .nav-item.profile .profile-desc .dropdown-menu .dropdown-item.preview-item .preview-thumbnail .preview-icon i {
                     font-size: 0.875rem; }
               .sidebar .nav .nav-item.profile .profile-desc .dropdown-menu .dropdown-item:hover {

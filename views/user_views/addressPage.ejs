@@ -1,0 +1,396 @@
+<%- include("partials/header") %>
+<style>
+    .coupon {
+        border-radius: 12px;
+        box-shadow: 5px 8px 10px #d6d5d533
+    }
+
+
+
+
+    .code:hover {
+        background: green;
+        color: #fff;
+        cursor: pointer
+    }
+</style>
+
+
+
+    <%- include("partials/navbar") %>
+
+        <section class="user-profile section"
+            style="background-image: url('/user_public/images/otp/otpBackground.jpg')">
+            <div class="container">
+                <div class="row ">
+                    <div class="col-lg-10">
+                        <!-- Edit Profile Welcome Text -->
+
+                        <!-- Edit Personal Info -->
+                        <div class="row">
+                            <div class="col-lg-5 col-md-6">
+
+
+                                <div class="widget personal-info shadow "
+                                    style="border-radius: 30px 0 0 30px ;background: #edeef7;">
+                                    <h3 class="widget-header user">Enter Shipping Address</h3>
+
+                                    <form  id="addressForm" action="/addAddress" method="post">
+                                        <!-- First Name -->
+                                        <div class="form-group">
+                                            <label for="first-name">Name<strong style="color:red;">*</strong></label>
+                                            <input type="text" class="form-control" id="first-name" name="name"
+                                                style="  border-radius: 15px 15px">
+                                        </div>
+                                        <!-- Last Name -->
+                                        <div class="form-group">
+                                            <label for="last-name">Phone Number<strong
+                                                    style="color:red;">*</strong></label>
+                                            <input class="form-control" type="tel" id="phone" name="phone"
+                                                maxlength="10" style="  border-radius: 15px 15px">
+                                        </div>
+                                        <!-- Zip Code -->
+                                        <div class="form-group">
+                                            <label for="zip-code">Zip Code<strong style="color:red;">*</strong></label>
+                                            <input type="number" class="form-control" id="zip-code" name="zip"
+                                                style="  border-radius: 15px 15px">
+                                        </div>
+                                      
+                                    
+                                </div>
+                                  <!-- Submit button -->
+                                  <button   class="btn" type="submit"
+                                  style="background:#5672f9 ;color: white; width:50%;border-radius: 40px;">Add Address</button>
+                                </form>
+
+                            </div>
+                            <div class="col-lg-5 col-md-6">
+                                <!-- Change Password -->
+                                <div class="widget change-password shadow"
+                                    style="border-radius:0 30px  30px 0;background: #edeef7;">
+
+                                    <!-- Current Password -->
+                                    <div class="form-group my-4">
+                                        <label for="current-password">Communication Address<strong
+                                                style="color:red">*</strong></label>
+                                        <input type="text" form="addressForm" class="form-control" id="address" name="address"
+                                            style="  border-radius: 15px 15px">
+                                    </div>
+                                    <!-- New Password -->
+                                    <div class="form-group">
+                                        <label for="new-password">City<strong style="color:red">*</strong></label>
+                                        <input type="text" form="addressForm" class="form-control" id="city" name="city"
+                                            style="  border-radius: 15px 15px">
+                                    </div>
+                                    <!-- Confirm New Password -->
+                                    <div class="form-group">
+                                        <label for="confirm-password">State<strong style="color:red">*</strong></label>
+                                        <input type="text" form="addressForm" class="form-control" id="state" name="state"
+                                            style="  border-radius: 15px 15px">
+                                    </div>
+                                </div>
+                                <!-- Submit button -->
+                                <button class="btn" id="myButton"
+                                    style="background:#5672f9 ;color: white; width:60%;border-radius: 40px;">Deliver Addr List</button>
+                                <div class="modal fade " id="glassAnimals" tabindex="-1" role="dialog"
+                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered modal-sm " role="document">
+                                        <div class="modal-content  ">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Address</h5>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+
+                                            <div class="modal-body">
+                                                <% user.address.forEach(function(address) { %>
+                                                   
+                                                        <h4>
+                                                            <%=address.name %>,
+                                                    
+                                               
+                                                            <%=address.address %>,
+                                                     
+
+
+
+                                                         <%=address.place %>,
+                                                       
+                                                
+                                                            <%=address.state %>,
+                                                       
+                                                        Pincode: 
+                                                            <%=address.pincode %>,
+                                                     
+                                                        Phone: 
+                                                            <%=address.phone %>.
+                                                    <div style="  display: flex;
+                                                    justify-content: center;
+                                                    align-items: center;">
+                                                      <a href="/proceedToCheckOut/<%=address._id %>">
+                                                        <button type="submit" class="btn btn-info my-3"
+                                                           >deliver here</button>
+                                                    </a>
+
+                                                    </div>
+                                                    <% }) %>
+                                                        <div class="modal-footer"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+
+
+
+                        </div>
+                    </div>
+
+                </div>
+                
+
+
+
+            </div>
+        </section>
+        <!-- Modal -->
+        <div id="myModal" style="display: none;">
+            <!-- Modal content -->
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <p>This is the modal content.</p>
+            </div>
+        </div>
+
+        <script>
+            function handleCheckbox(checkbox) {
+                var checkboxes = document.getElementsByName('payment');
+                checkboxes.forEach(function (cb) {
+                    if (cb !== checkbox) {
+                        cb.checked = false;
+                    }
+                });
+            }
+        </script>
+
+
+        <!--Inside index.html -->
+
+
+
+
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+        <script>
+            $(document).ready(function () {
+                // Get the button and modal elements
+                var button = $("#myButton");
+                var modal = $("#glassAnimals");
+
+                // Function to open the modal
+                function openModal() {
+                    modal.modal("show");
+                }
+
+                // Add event listener to the button
+                button.click(openModal);
+            });
+        </script>
+
+
+
+        <script>
+
+
+            $(document).ready(function () {
+                $('#personal-info-form').submit(function (e) {
+                    e.preventDefault();
+
+                    var formData = $(this).serialize();
+                    const paypalCheckbox = document.getElementById("checkboxPayPal");
+                    const razorPayCheckbox = document.getElementById("razorPayCheckbox");
+
+                    if (paypalCheckbox.checked) {
+                        console.log("check in")
+                        $.ajax({
+                            url: "/findOrderPlaced",
+                            type: "POST",
+                            data: {
+                                payment: "payPal",
+                                name: nameInput.value,
+                                state: stateInput.value,
+                                zip: zipCodeInput.value,
+                                phone: phoneInput.value,
+                                address: addressInput.value,
+                                city: cityInput.value
+
+
+                            },
+                            success: function (res) {
+                                var approvalUrl = res; // Assuming the link is directly received in the response
+
+                                // Open the link in a new browser window or tab
+                                window.open(approvalUrl);
+
+                            },
+                            error: function (err) {
+                                // Handle the error, if any
+                                console.log(err);
+                            }
+
+                        });
+
+                        return false;
+
+                    } else if (razorPayCheckbox.checked) {
+                        $.ajax({
+
+                            url: "/findOrderPlaced",
+                            type: "POST",
+                            data: {
+                                payment: "Razorpay",
+                                name: nameInput.value,
+                                state: stateInput.value,
+                                zip: zipCodeInput.value,
+                                phone: phoneInput.value,
+                                address: addressInput.value,
+                                city: cityInput.value
+                            },
+
+
+                            success: function (res) {
+
+
+                                if (res.success) {
+
+                                    var options = {
+
+                                        "key": "" + res.key_id + "",
+                                        "amount": "" + res.amount + "",
+                                        "currency": "INR",
+                                        "name": "" + res.product_name + "",
+                                        "description": "" + res.description + "",
+                                        "image": "https://dummyimage.com/600x400/000/fff",
+                                        "order_id": "" + res.order_id + "",
+                                        "handler": function (response) {
+
+
+                                            varifyPayment(response, res.order);
+
+
+
+                                        },
+                                        "prefill": {
+                                            "contact": res.contact,
+                                            "name": res.name,
+                                            "email": res.email
+                                        },
+                                        "notes": {
+                                            "description": "" + res.description + ""
+                                        },
+                                        "theme": {
+                                            "color": "#2300a3"
+                                        }
+                                    };
+
+                                    var razorpayObject = new Razorpay(options);
+                                    razorpayObject.open();
+                                    // razorpayObject.on('payment.success', function (response) {
+                                    //   // Show custom success message or perform other actions
+                                    //   var successMessage = document.getElementById("success-message");
+                                    //   successMessage.style.display = "block";
+
+                                    //   // Hide the success message after a specific duration (e.g., 5 seconds)
+                                    //   setTimeout(function () {
+                                    //     successMessage.style.display = "none";
+                                    //   }, 5000);
+                                    // });
+
+                                    razorpayObject.on('payment.failed', function (response) {
+                                        alert("Payment Failed");
+                                        alert(response.error.code);
+                                        alert(response.error.description);
+                                        alert(response.error.source);
+                                        alert(response.error.step);
+                                        alert(response.error.reason);
+                                        alert(response.error.metadata.order_id);
+                                        alert(response.error.metadata.payment_id);
+                                    });
+
+                                }
+                                else {
+                                    alert(res.msg);
+                                }
+                            }
+                        })
+
+
+                    } else {
+                        const nameInput = document.getElementById('first-name');
+                        const addressInput = document.getElementById('address');
+                        const cityInput = document.getElementById('city');
+                        const stateInput = document.getElementById('state');
+                        const zipCodeInput = document.getElementById('zip-code');
+                        const phoneInput = document.getElementById('phone');
+                        $.ajax({
+                            url: "/findOrderPlaced",
+                            type: "POST",
+                            data: {
+                                payment: "COD",
+                                name: nameInput.value,
+                                state: stateInput.value,
+                                zip: zipCodeInput.value,
+                                phone: phoneInput.value,
+                                address: addressInput.value,
+                                city: cityInput.value
+
+                            },
+                            success: function (res) {
+                                console.log(res)
+                                // Handle successful response
+                                // Assuming the response contains the rendered HTML for the "orderSuccessful" page
+
+
+                            }
+                        });
+
+
+                    }
+
+
+                });
+            });
+
+            function varifyPayment(payment, order) {
+
+                // Send the signature to the backend
+                $.ajax({
+                    url: "/verifySignature",
+                    type: "POST",
+                    data: {
+                        payment, order
+                    },
+                    error: function (err) {
+                        // Handle the error, if any
+                        console.log(err);
+                    }
+
+                });
+
+
+            }
+
+
+
+        </script>
+
+    
+
+
+
+
+        <%- include("partials/footer") %>

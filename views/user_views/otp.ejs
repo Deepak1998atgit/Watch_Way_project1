@@ -1,0 +1,123 @@
+<%- include("partials/header") %>
+<style>
+    .success-message {
+      display: none;
+      padding: 10px;
+      background-color: #dff0d8;
+      color: #3c763d;
+    }
+  </style>
+
+
+    <%- include("partials/navbar") %>
+
+        <section class="login  border-top-1 ">
+
+            <div class="container">
+
+                <div class="row justify-content-center">
+                    <div class="col-lg-4 col-md-4 align-item-center">
+                        
+                                <div class="border" style="border-radius: 30px;">
+                                    <div class="d-flex justify-content-center"
+                                        style="border-radius: 30px 30px 0 0;background:#c5dfe3">
+                                        <h3 class=" p-4 ">Login with OTP</h3>
+                                    </div>
+                                    <% if (locals.message) { %>
+                            
+                                        <div id="successMessage" class="success-message">
+                                            <i class="fas fa-check-circle"></i> <%= locals.message %>
+                                        </div>
+            
+                                        <% } %>
+                                    <form id="send-otp-form" action="/sendOtp" method="post">
+                                        <fieldset class="p-4">
+                                            <input class="form-control mb-3" type="tel" name="phone" id="phone"
+                                                placeholder="Phone" required>
+                                            <button type="submit"
+                                                class="btn btn-outline-info btn-lg btn-block font-weight-bold mt-3"
+                                                style="border-radius: 30px;">Send OTP</button>
+                                        </fieldset>
+                                    </form>
+
+                                    <!-- verify OTP form -->
+                                    <form id="verify-otp-form" action="/verifyOtp" method="post">
+                                        <fieldset class="p-4">
+                                            <input type="hidden" name="hphone" id="verify-phone" required />
+                                            <input class="form-control mb-3" type="password" name="otp"
+                                                placeholder="OTP Enter">
+                                            <input class="form-control mb-3" type="password" name="newPassword"
+                                                placeholder="New Password" required>
+                                            <input class="form-control mb-3" type="password" name="confirmPassword"
+                                                placeholder="Confirm Password" required>
+                                            <button type="submit"
+                                                class="btn btn-outline-info btn-lg btn-block font-weight-bold mt-3"
+                                                style="border-radius: 30px;">Verify OTP</button>
+                                        </fieldset>
+                                    </form>
+                                </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+
+
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                // Store the phone number value
+                let phoneNumber = '';
+
+                // Add event listener to the send OTP form submission
+                document.getElementById('send-otp-form').addEventListener('submit', function (event) {
+                    event.preventDefault(); // Prevent the default form submission
+
+                    // Get the phone number value from the send OTP form
+                    phoneNumber = document.getElementById('phone').value;
+                    console.log(phoneNumber, "Sent OTP");
+
+                    // Submit the send OTP form
+                    this.submit();
+                });
+
+                // Add event listener to the verify OTP form submission
+                document.getElementById('verify-otp-form').addEventListener('submit', function (event) {
+                    event.preventDefault(); // Prevent the default form submission
+
+                    // Populate the phone number in the hidden input field of the verify OTP form
+                    document.getElementById('verify-phone').value = phoneNumber;
+                    console.log(phoneNumber, "Verified OTP");
+
+                    // Submit the verify OTP form
+                    this.submit();
+                });
+            });
+        </script>
+        <script>
+            // Get the success message element
+            var successMessage = document.getElementById("successMessage");
+          
+            // Set the initial display property
+            successMessage.style.display = "none";
+          
+            // Show the message
+            successMessage.style.display = "block";
+          
+            // Hide the message after 3 seconds
+            setTimeout(function() {
+              successMessage.style.display = "none";
+            }, 3000);
+          </script>
+
+
+
+
+
+
+
+
+
+
+        <%- include("partials/footer") %>

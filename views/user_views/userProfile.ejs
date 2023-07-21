@@ -1,0 +1,379 @@
+<%- include("partials/header") %>
+
+  <%- include("partials/navbar") %>
+    <!-- User Profile -->
+    <section class="user-profile section" style="background-image: url('/user_public/images/otp/otpBackground.jpg')">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-4">
+            <div class="sidebar">
+              <!-- User Widget -->
+              <div class="widget user shadow-lg" style="border-radius: 30px;">
+                <!-- User Image -->
+                <div class="image d-flex justify-content-center">
+                  <img src="/user_public/images/user/user-thumb.jpg" alt="" class="">
+
+                </div>
+                <!-- User Name -->
+
+                <h5 class="text-center">
+                  <%= userDetail.name %>
+                </h5>
+                <ul>
+
+
+                  <li>
+                    <h3>Phone:<%= userDetail.phone %>
+                    </h3>
+                  </li>
+                  <li>
+                    <h3>Email:<%= userDetail.email %>
+                    </h3>
+                  </li>
+                  <% if(wallet) { %>
+                    <li>
+                      <h6><img src="/user_public/images/wallet.png" style="width: 35px;" alt="">Wallet Amount:₹<span
+                          class="text-dark">
+                          <%= wallet.amount %>/-
+                        </span> </h6>
+
+                    </li>
+                  <% } %>
+
+
+                </ul>
+              </div>
+
+              <div class="address-container">
+                <% userDetail.address.forEach(function(addr, index) { %>
+                  <ul style="<%= index > 0 ? 'display: none;' : '' %>">
+                    <li>
+                      <p>
+                      <h3 class="text-dark">
+                        <strong>ADR.<%= index + 1 %></strong>
+                        <%= addr.name %>,
+                          <br>
+                          <%= addr.address %>,
+                            <br>
+                            <%= addr.place %>,
+
+                              <%= addr.state %>,
+                                <br>
+                                Pin: <%= addr.pincode %>,
+
+                                  <br>
+                                  Phone: <%= addr.phone %>.
+
+                      </h3>
+                      </p>
+                    </li>
+                    <li class="mx-5">
+                      <button data-item-id="<%= addr._id %>" class="myButtonInside btn btn-success">
+                        <span>Update</span>
+                      </button>
+                      <button data-item-id="<%= addr._id %>" class="btn removeButton btn-danger">
+                        <span>Delete</span>
+                      </button>
+                      <!-- Modal -->
+                      <div id="myModalInside-<%= addr._id %>" class="modal">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h4 class="modal-title">Addresses</h4>
+                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                              <div class="widget user-dashboard-menu">
+                                <form action="/addressManage/<%= addr._id %>" method="post">
+                                  <label for="name">Name</label>
+                                  <input type="text" id="name" name="name" class="form-control">
+                                  <label for="name">Address</label>
+                                  <input type="text" id="name" name="address" class="form-control">
+                                  <label for="phone">Phone</label>
+                                  <input type="tel" id="phone" name="phone" class="form-control">
+                                  <label for="pin">Pin</label>
+                                  <input type="number" id="name" name="pin" class="form-control">
+                                  <label for="place">Place</label>
+                                  <input type="text" id="place" name="place" class="form-control">
+                                  <label for="state">State</label>
+                                  <input type="text" id="state" name="state" class="form-control">
+                                  <button type="submit" class="btn btn-info">update</button>
+                                </form>
+                              </div>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- Modal -->
+                      <div id="myModal" class="modal">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h4 class="modal-title">Addresses</h4>
+                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                              <div class="widget user-dashboard-menu">
+                              </div>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                  <% }); %>
+              </div>
+              <div class="pagination-buttons ">
+                <button class="prev-button btn btn-transparent mx-4" style="border: none;color:blue;">Previous</button>
+                <button class="next-button btn  btn-transparent" style="border: none;color:blue;">Next</button>
+              </div>
+            </div>
+
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script>
+              $(document).ready(function () {
+                var addresses = $(".address-container ul"); // Select the address elements
+                var currentAddressIndex = 0; // Index of the currently displayed address
+
+                // Show the initial address
+                showAddress(currentAddressIndex);
+
+                // Function to show the address at the specified index
+                function showAddress(index) {
+                  addresses.hide(); // Hide all addresses
+                  addresses.eq(index).show(); // Show the address at the specified index
+                }
+
+                // Event handler for the next button
+                $(".next-button").click(function () {
+                  if (currentAddressIndex < addresses.length - 1) {
+                    currentAddressIndex++; // Increment the current index
+                    showAddress(currentAddressIndex);
+                  }
+                });
+
+                // Event handler for the previous button
+                $(".prev-button").click(function () {
+                  if (currentAddressIndex > 0) {
+                    currentAddressIndex--; // Decrement the current index
+                    showAddress(currentAddressIndex);
+                  }
+                });
+              });
+            </script>
+
+
+          </div>
+
+          <div class="col-lg-7">
+            <!-- Edit Profile Welcome Text -->
+            <div class="widget welcome-message" style="border-radius: 30px 30px 0 0;">
+
+              <h2>Edit profile</h2>
+
+            </div>
+
+            <!-- Edit Personal Info -->
+            <div class="row">
+              <div class="col-lg-12 col-md-12">
+                <div class="widget personal-info">
+                  <h3 class="widget-header user">Edit Personal Information</h3>
+                  <form action="/editUserProfile" method="post" onsubmit="return validateForm()">
+
+                    <!-- First Name -->
+                    <div class="form-group">
+                      <label for="first-name">Name</label>
+                      <input type="text" class="form-control" id="first-name" name="name">
+                      <span id="name-error" class="text-danger"></span>
+                    </div>
+                    <!-- Last Name -->
+                    <div class="form-group">
+                      <label for="last-name">Email</label>
+                      <input type="email" class="form-control" id="email-user" name="email">
+                      <span id="email-error" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="phone">Phone</label>
+                      <input type="tel" class="form-control" name="phone" id="phoneInput">
+                      <span id="phone-error" class="text-danger"></span>
+
+                    </div>
+
+                    <!-- New Password -->
+                    <div class="form-group">
+                      <label for="new-password">New Password</label>
+                      <input type="password" class="form-control" id="new-password">
+                      <span id="new-password-error" class="text-danger"></span>
+
+                    </div>
+                    <!-- Confirm New Password -->
+                    <div class="form-group">
+                      <label for="confirm-password">Confirm New Password</label>
+                      <input type="password" class="form-control" id="confirm-password" name="newPassword"
+                        name="password">
+                      <span id="confirm-password-error" class="text-danger"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-info">Save My Changes</button>
+
+                  </form>
+
+
+
+
+
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+    <script>
+      function validateForm() {
+        // Get the form and input field elements
+        const nameInput = document.getElementById("first-name");
+        const nameError = document.getElementById("name-error");
+        const emailInput = document.getElementById("email-user");
+        const emailError = document.getElementById("email-error");
+        const phoneInput = document.getElementById("phoneInput");
+        const phoneError = document.getElementById("phone-error");
+        const newPasswordInput = document.getElementById("new-password");
+        const newPasswordError = document.getElementById("new-password-error");
+        const confirmPasswordInput = document.getElementById("confirm-password");
+        const confirmPasswordError = document.getElementById("confirm-password-error");
+
+
+        // Clear previous error message
+
+
+        // Validate Name after 2 seconds
+        const name = nameInput.value.trim();
+        const email = emailInput.value.trim();
+        const phone = phoneInput.value.trim();
+        console.log(phone, phoneInput);
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        // const phoneRegex = /^\d{10}$/;
+        const newPassword = newPasswordInput.value;
+        const confirmPassword = confirmPasswordInput.value;
+        if (name === "") {
+          nameError.textContent = "Please enter your name.";
+          // Prevent form submission
+          setTimeout(function () {
+            nameError.textContent = "";
+          }, 2000);
+          return false;
+        } else if (email === "") {
+          emailError.textContent = "Please enter your email.";
+          setTimeout(function () {
+            emailError.textContent = "";
+          }, 2000);
+          return false;
+        } else if (!emailRegex.test(email)) {
+          emailError.textContent = "Please enter valid email.";
+          setTimeout(function () {
+            emailError.textContent = "";
+          }, 2000);
+          return false;
+
+        }
+        else if (phone === "") {
+          phoneError.textContent = "Please enter phone.";
+          setTimeout(function () {
+            phoneError.textContent = "";
+          }, 2000);
+          return false;
+
+        }
+        else if (newPassword === "") {
+          newPasswordError.textContent = "Enter the new password";
+          setTimeout(function () {
+            newPasswordError.textContent = "";
+          }, 2000);
+          return false;
+
+        }
+        else if (newPassword !== confirmPassword) {
+          confirmPasswordError.textContent = "Passwords do not match.";
+          setTimeout(function () {
+            confirmPasswordError.textContent = "";
+          }, 2000);
+          return false;
+
+        }
+
+
+        // Allow form submission
+        return true;
+
+      }
+    </script>
+
+
+
+
+
+
+
+    <script>
+      $(document).ready(function () {
+        // Get the button and modal elements
+        var button = $("#myButton");
+        var modal = $("#myModal");
+
+        // Function to open the modal
+        function openModal() {
+          modal.modal("show");
+        }
+
+        // Add event listener to the button
+        button.click(openModal);
+      });
+    </script>
+    <script>
+
+      // Get the button and modal elements
+      $(".myButtonInside").click(function () {
+        // Get the address ID
+        var addressId = $(this).data("item-id");
+
+        // Get the corresponding modal
+        var modal = $("#myModalInside-" + addressId);
+
+        // Open the modal
+        modal.modal("show");
+      });
+
+      $(".removeButton").click(function () {
+
+        var addressId = $(this).data("item-id");
+        $.post("/removeAddress", { addressId: addressId }, function (response) {
+          // Handle the response from the server
+          if (response.redirect) {
+            // Redirect to the specified URL
+            window.location.href = response.redirect;
+          }
+        });
+
+
+      });
+
+    </script>
+
+
+
+
+    <%- include("partials/footer") %>

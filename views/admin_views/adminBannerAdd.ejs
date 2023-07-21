@@ -1,0 +1,119 @@
+<%- include("partials/header") %>
+    <div class="container-scroller">
+        <!-- partial:partials/_sidebar.html -->
+        <%- include("partials/sidebar") %>
+            <!-- partial -->
+            <div class="container-fluid page-body-wrapper">
+                <!-- partial:partials/_navbar.html -->
+                <%- include("partials/navbar") %>
+                    <div class="container-fluid page-body-wrapper-lg">
+                        <!-- partial -->
+                        <div class="main-panel">
+
+                            <div class="main-panel">
+                                <div class="content-wrapper">
+                                    <div class="page-header">
+                                        <!-- <h3 class="page-title"> Form elements </h3> -->
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-5 grid-margin stretch-card justify-content-center ">
+                                            <div class="card ">
+                                                <div class="card-body ">
+                                                    <h4 class="card-title">Add Banner</h4>
+
+                                                    <form class="forms-sample" action="/addBannerForm" method="POST"
+                                                        enctype="multipart/form-data">
+                                                        <div class="form-group" >
+                                                            <label for="exampleInputUsername1">Title</label>
+
+                                                            <input type="text" class="form-control" type="text"
+                                                                name="title" id="exampleInputUsername1"
+                                                                placeholder="Tttle" required>
+
+                                                        </div>
+                                                        <!-- <div class="form-group">
+                                                            <label for="exampleInputUsername1">Product Name</label>
+
+                                                            <input type="text" class="form-control" type="text"
+                                                                name="category" id="exampleInputUsername1"
+                                                                placeholder="category">
+
+                                                        </div> -->
+                                                        <div class="form-group">
+                                                            <label for="exampleInputEmail1">SubTitle</label>
+
+                                                            <input type="text" class="form-control" name="subtitle"
+                                                                id="exampleInputPassword1"  placeholder="subtitle" required> 
+
+
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="exampleInputPassword1">Upload Image of the
+                                                                Product</label>
+                                                            <input type="file" class="form-control" name="photo"
+                                                                id="exampleInputPassword1" placeholder=" Image " multiple required>
+                                                        </div>
+
+
+                                                      
+
+
+                                                            
+                                                        <button type="submit" class="btn btn-dark">Add product</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-7 grid-margin stretch-card">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <div class="d-flex flex-row justify-content-between">
+                                                        <h4 class="card-title mb-1">Banners Added</h4>
+                                                   
+                                                    </div>
+                                                    <% banners.forEach(banner => { %>
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            <div class="preview-list">
+                                                               
+                                                                <div class="preview-item border-bottom">
+                                                                    <div class="preview-thumbnail">
+                                                                       
+                                                                           
+                                                                           1.<img src="/<%= banner.image[0] %>" style="width:195px;height:84px;" alt="">
+                                                                           2.<img src="/<%= banner.image[1] %>" class="my-1" style="width:195px;height:84px;" alt="">
+                                                                           3.<img src="/<%= banner.image[2] %>" class="my-1"  style="width:195px;height:84px;" alt="">
+                                                                     
+                                                                    </div>
+                                                                    <div class="preview-item-content d-sm-flex flex-grow">
+                                                                        <div class="flex-grow">
+                                                                            <h4 class="preview-subject"><%= banner.title %>
+                                                                            </h4>
+                                                                            <h5 class="text-white mb-1"><%= banner.subtitle %>
+                                                                            </h5>
+                                                                            <h5 class=" mb-0">Status:<%= banner.activate %>
+                                                                            </h5>
+                                                                            <div class="my-1">
+                                                                                <a href="/editBanner/<%= banner._id %>?action=show" class="btn btn-info">Show</a>
+                                                                                <a href="/editBanner/<%= banner._id %>?action=notshow" class="btn btn-info">Not Show</a>
+                                                                                <a href="/editBanner/<%= banner._id %>?action=delete" class="btn btn-danger">Deleate</a>
+
+                                                                            </div>
+                                                                           
+                                                                        </div>
+                                                                        
+                                                                    </div>
+                                                                </div>
+                                                               
+                                                            
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <% }) %>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                   
+                                    <%- include("partials/footer") %>

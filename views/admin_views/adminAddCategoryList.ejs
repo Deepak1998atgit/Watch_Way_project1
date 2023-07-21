@@ -46,65 +46,63 @@
                                                                 </td>
                                                                 <td>
                                                                     <li class="nav-item dropdown"
-                                                                    style=" list-style-type: none;">
-                                                                    <a class="nav-link" id="profileDropdown"
-                                                                        href="#" data-toggle="dropdown">
-                                                                        <div class="navbar-profile">
-
-
+                                                                        style=" list-style-type: none;">
+                                                                        <a class="nav-link" id="profileDropdown"
+                                                                            href="#" data-toggle="dropdown">
+                                                                            <div class="navbar-profile">
                                                                             <i class="mdi mdi-pen d-none d-sm-block"
-                                                                                style="font-size: 24px;"></i>
-                                                                        </div>
-                                                                    </a>
-                                                                    <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
-                                                                        aria-labelledby="profileDropdown">
-                                                                        <h6 class="p-3 mb-0">Take Action</h6>
-                                                                        <div class="dropdown-divider"></div>
-
-                                                                        <div class="dropdown-divider"></div>
-                                                                        <a class="dropdown-item preview-item"
-                                                                            href="/uu/<%= category._id %>">
-                                                                            <div class="preview-thumbnail">
-                                                                                <div
-                                                                                    class="preview-icon bg-dark rounded-circle">
-                                                                                    <i
-                                                                                        class="mdi mdi-logout text-danger"></i>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="preview-item-content">
-                                                                                <p class="preview-subject mb-1">
-                                                                                    Update</p>
+                                                                                    style="font-size: 24px;"></i>
                                                                             </div>
                                                                         </a>
-                                                                        <div class="dropdown-divider"></div>
-                                                                        <a class="dropdown-item preview-item"
-                                                                            href="/deleteCategory/<%= category._id%>">
-                                                                            <div class="preview-thumbnail">
-                                                                                <div
-                                                                                    class="preview-icon bg-dark rounded-circle">
-                                                                                    <i
-                                                                                        class="mdi mdi-logout text-danger"></i>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="preview-item-content">
-                                                                                <p class="preview-subject mb-1">
-                                                                                    Delete
-                                                                                </p>
-                                                                            </div>
+                                                                        <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
+                                                                            aria-labelledby="profileDropdown">
+                                                                            <h6 class="p-3 mb-0">Take Action</h6>
                                                                             <div class="dropdown-divider"></div>
-                                                                        </a>
 
-                                                                    </div>
-                                                                </li>
+                                                                            <div class="dropdown-divider"></div>
+                                                                            <a class="dropdown-item preview-item"
+                                                                                href="/<%= category._id %>">
+                                                                                <div class="preview-thumbnail">
+                                                                                    <div
+                                                                                        class="preview-icon bg-dark rounded-circle">
+                                                                                        <i
+                                                                                            class="mdi mdi-logout text-danger"></i>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="preview-item-content">
+                                                                                    <p class="preview-subject mb-1">
+                                                                                        Update</p>
+                                                                                </div>
+                                                                            </a>
+                                                                            <div class="dropdown-divider"></div>
+                                                                            <a class="dropdown-item preview-item"
+                                                                                href="/deleteCategory/<%= category._id%>">
+                                                                                <div class="preview-thumbnail">
+                                                                                    <div
+                                                                                        class="preview-icon bg-dark rounded-circle">
+                                                                                        <i
+                                                                                            class="mdi mdi-logout text-danger"></i>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="preview-item-content">
+                                                                                    <p class="preview-subject mb-1">
+                                                                                        Delete
+                                                                                    </p>
+                                                                                </div>
+                                                                                <div class="dropdown-divider"></div>
+                                                                            </a>
+
+                                                                        </div>
+                                                                    </li>
 
 
                                                                 </td>
                                                                 <td>
-                                                                    
+
                                                                 </td>
                                                                 <td></td>
                                                                 <td>
-                                                                <div class="badge badge-outline-success">Approved
+                                                                    <div class="badge badge-outline-success">Approved
                                                                 </td>
                                                             </tr>
                                                             <% }) %>
@@ -117,26 +115,18 @@
                                                                     </td>
                                                                     <td> </td>
                                                                     <td> </td>
-                                                                    <td> 
+                                                                    <td>
                                                                         <% if (req.query.error) { %>
                                                                             <div id="error-message">
-                                                                              <%= req.query.error %>
+                                                                                <%= req.query.error %>
                                                                             </div>
-                                                                          <% } %>
+                                                                            <% } %>
                                                                     </td>
                                                                     <td> </td>
                                                                     <td> </td>
                                                                     <td> </td>
 
                                                                 </tr>
-                                                               
-
-
-
-
-
-
-
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -146,13 +136,13 @@
                             </div>
                             <script>
                                 // Timeout to hide the error message after 5 seconds (adjust the duration as needed)
-                                setTimeout(function() {
-                                  var errorMessage = document.getElementById('error-message');
-                                  if (errorMessage) {
-                                    errorMessage.style.display = 'none';
-                                  }
+                                setTimeout(function () {
+                                    var errorMessage = document.getElementById('error-message');
+                                    if (errorMessage) {
+                                        errorMessage.style.display = 'none';
+                                    }
                                 }, 1000);
-                              </script>
+                            </script>
 
                             <%- include("partials/footer") %>
 

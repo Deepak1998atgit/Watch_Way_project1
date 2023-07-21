@@ -49,7 +49,7 @@
                                                                 </td>
                                                                 <td>
                                                                     <img class="img-thumbnail" width="100px"
-                                                                        src=" <%=product.photo %>" style=" width: 100px;
+                                                                        src="<%= product.photo[0] %>" style=" width: 100px;
                                                                   height: 100px;
                                                                   background-color:#7AF723; 
                                                                   border-radius:10px; 
@@ -153,6 +153,7 @@
                                 </div>
                             </div>
 
-                            <%- include("partials/footer") %>
+                           
 
                         </div>
+                        <%- include("partials/footer") %>

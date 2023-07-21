@@ -1,0 +1,40 @@
+<%- include("partials/header") %>
+	<%- include("partials/navbar") %>
+		<style>
+			.image-container {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+
+				/* Set the desired height for the container */
+			}
+
+			.image-container {
+				text-align: center;
+			}
+		</style>
+		<div class="container col-lg-12 my-1">
+			<div class="image-container">
+				<h1 style="color: green;">Thank You!! Order has been Placed</h1>
+			</div>
+		</div>
+		<div class="container col-lg-12 my-2">
+
+			<div class="image-container">
+				<img src="/user_public/images/cod.jpg" style="height:468px;width:538px ;" alt="">
+
+			</div>
+
+
+
+		</div>
+		<div class="container col-lg-12 my-4">
+		<div class="image-container">
+			<a href="/" class="btn btn-primary">Cont. Shopping</a>
+			<a href="/orderView" class="btn btn-primary mx-4">Order Details</a>
+        </div>
+</div>
+
+
+
+		<%- include("partials/footer") %>

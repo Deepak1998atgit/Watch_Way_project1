@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const connectDB = mongoose
-  .connect("mongodb://127.0.0.1:27017/watchWay")
+  .connect(process.env.MONGODB_CONNECTION_URL)
   
   .then(() => {
     console.log("connected");

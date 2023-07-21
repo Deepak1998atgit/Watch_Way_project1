@@ -29,7 +29,7 @@
 
                                                             <input type="text" class="form-control" type="text"
                                                                 name="name" id="exampleInputUsername1"
-                                                                placeholder="Product name">
+                                                                placeholder="Product name" required>
 
                                                         </div>
                                                         <!-- <div class="form-group">
@@ -44,7 +44,7 @@
                                                             <label for="exampleInputEmail1">Price</label>
 
                                                             <input type="number" class="form-control" name="price"
-                                                                id="exampleInputPassword1"  placeholder="price"> 
+                                                                id="exampleInputPassword1" placeholder="price" required>
 
 
                                                         </div>
@@ -52,7 +52,8 @@
                                                             <label for="exampleInputPassword1">Upload Image of the
                                                                 Product</label>
                                                             <input type="file" class="form-control" name="photo"
-                                                                id="exampleInputPassword1" placeholder=" Image ">
+                                                                id="exampleInputPassword1" placeholder=" Image "
+                                                                multiple required>
                                                         </div>
 
 
@@ -62,8 +63,9 @@
                                                                 Categories
                                                                 <select name="category">
                                                                     <% category.forEach(function(product) { %>
-                                                                        <option value="<%= product.category %>"><%= product.category %>
-                                                                           
+                                                                        <option value="<%= product.category %>">
+                                                                            <%= product.category %>
+
                                                                         </option>
                                                                         <% }); %>
                                                                 </select>
@@ -71,7 +73,7 @@
                                                         </div>
 
 
-                                                            
+
                                                         <button type="submit" class="btn btn-dark">Add product</button>
                                                     </form>
                                                 </div>

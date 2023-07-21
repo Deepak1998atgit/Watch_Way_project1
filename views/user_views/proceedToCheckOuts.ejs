@@ -1,0 +1,404 @@
+<%- include("partials/header") %>
+
+  <%- include("partials/navbar") %>
+
+    <section class="user-profile section">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-6">
+
+            <!-- Edit Profile Welcome Text -->
+            <div class="widget welcome-message">
+              
+              <h2>Place Order</h2>
+            </div>
+            <!-- Edit Personal Info -->
+            <div class="row">
+              <div class="col-lg-6 col-md-6">
+                <div class="widget personal-info">
+                  <h3 class="widget-header user">Enter Personal Information</h3>
+                  <form id="personal-info-form" action="/findOrderPlaced" method="post">
+                    <!-- First Name -->
+                    <div class="form-group">
+                      <label for="first-name">Name<strong style="color:red;">*</strong></label>
+                      <input type="text" class="form-control" id="first-name" name="name">
+                    </div>
+                    <!-- Last Name -->
+                    <div class="form-group">
+                      <label for="last-name">Phone Number<strong style="color:red;">*</strong></label>
+                      <input class="form-control" type="tel" id="phone" name="phone" maxlength="10">
+                    </div>
+                    <!-- Zip Code -->
+                    <div class="form-group">
+                      <label for="zip-code">Zip Code<strong style="color:red;">*</strong></label>
+                      <input type="number" class="form-control" id="zip-code" name="zip">
+                    </div>
+                  </form>
+                </div>
+              </div>
+              <div class="col-lg-6 col-md-6">
+                <!-- Change Password -->
+                <div class="widget change-password">
+                  <h3 class="widget-header user">Address</h3>
+
+                  <!-- Current Password -->
+                  <div class="form-group">
+                    <label for="current-password">Communication Address<strong style="color:red">*</strong></label>
+                    <input type="text" class="form-control" id="address" name="address">
+                  </div>
+                  <!-- New Password -->
+                  <div class="form-group">
+                    <label for="new-password">City<strong style="color:red">*</strong></label>
+                    <input type="text" class="form-control" id="city" name="city">
+                  </div>
+                  <!-- Confirm New Password -->
+                  <div class="form-group">
+                    <label for="confirm-password">State<strong style="color:red">*</strong></label>
+                    <input type="text" class="form-control" id="state" name="state">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Submit button -->
+            <button form="personal-info-form" class="btn btn-transparent">Place Order</button>
+          </div>
+
+          <div class="col-lg-6">
+            <div class="sidebar">
+              <!-- User Widget -->
+              <h5 class="text-center">Your Orders</h5>
+              <div class="widget user">
+                <!-- User Image -->
+
+                <div class="widget disclaimer">
+                  <% let totalAmount=0; %>
+                    <% if (!cartProducts) { %>
+                      <p>Items Ordered Successfully from Cart</p>
+                      <% } else { %>
+                        <% cartProducts.cartItems.forEach((item)=> { %>
+                          <ul class="price-list">
+                            <li>
+                              <img src="/<%= item.product.photo[0] %>" style="height: 60px;width: 60px;">
+                              <p>
+                                <strong>
+                                  <%= item.product.name %>
+                                </strong>
+                              </p>
+                            </li>
+                            <li>
+                              <span class="item-info">Price(<%= item.quantity %>)Item</span>
+                              <span class="item-price"><strong>&#8377;<%= item.quantity * item.product.price %>
+                                    .0</strong></span>
+                              <% totalAmount +=item.quantity * item.product.price; %>
+                            </li>
+                            <% }); %>
+                              <li class="widget-cart-total">
+                                <span class="item-info">Delivery Charges</span>
+                                <span class="item-price" style="color: green;"><strong>Free</strong></span>
+                              </li>
+                              <li class="total-amount">
+                                <span class="item-info">Total Amount</span>
+                                <span class="item-price"><strong>&#8377;<%= totalAmount %></strong></span>
+                              </li>
+                          </ul>
+                          <% } %>
+                </div>
+              </div>
+              <% if (order) { %>
+                <div class="widget user-dashboard-menu">
+                  <ul>
+                    <li><input type="checkbox" name="addressCheckbox" id="address-checkbox" form="personal-info-form">
+                      <%= order.address %>
+                    </li>
+                    <li class="mx-3">
+                      <%= order.city %>
+                    </li>
+                    <li class="mx-3">
+                      <%= order.state %>
+                    </li>
+                    <li class="mx-3">
+                      <%= order.zipCode %>
+                    </li>
+                    <li class="mx-3">
+                      <%= user.phone %>
+                    </li>
+                  </ul>
+                </div>
+                <% } else { %>
+                  <p>Please provide a shipping address.</p>
+                  <% } %>
+
+                    <!-- Dashboard Links -->
+                    <div class="widget user-dashboard-menu">
+                      <ul>
+                        <li>
+                          <input type="checkbox" name="payment" onclick="handleCheckbox(this)" value="COD"
+                            form="personal-info-form"> Cash On Delivery
+                        </li>
+                        <li>
+                          <input type="checkbox" name="payment" id="checkboxPayPal" onclick="handleCheckbox(this)"
+                            value="PayPal" form="personal-info-form"> PayPal
+                        </li>
+                        <li>
+                          <input type="checkbox" name="payment" id="razorPayCheckbox" onclick="handleCheckbox(this)"
+                            value="Razorpay" form="personal-info-form"> Razor Pay
+                        </li>
+                        
+                      </ul>
+                    </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      function handleCheckbox(checkbox) {
+        var checkboxes = document.getElementsByName('payment');
+        checkboxes.forEach(function (cb) {
+          if (cb !== checkbox) {
+            cb.checked = false;
+          }
+        });
+      }
+    </script>
+
+
+    <!--Inside index.html -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+
+
+    <script>
+
+
+      $(document).ready(function () {
+        $('#personal-info-form').submit(function (e) {
+          e.preventDefault();
+
+          var formData = $(this).serialize();
+          const paypalCheckbox = document.getElementById("checkboxPayPal");
+          const razorPayCheckbox = document.getElementById("razorPayCheckbox");
+
+          if (paypalCheckbox.checked) {
+            console.log("check in")
+            $.ajax({
+              url: "/findOrderPlaced",
+              type: "POST",
+              data: {
+                payment: "payPal",
+                name: nameInput.value,
+                state: stateInput.value,
+                zip: zipCodeInput.value,
+                phone: phoneInput.value,
+                address: addressInput.value,
+                city: cityInput.value
+
+
+              },
+              success: function (res) {
+                var approvalUrl = res; // Assuming the link is directly received in the response
+
+                // Open the link in a new browser window or tab
+                window.open(approvalUrl);
+
+              },
+              error: function (err) {
+                // Handle the error, if any
+                console.log(err);
+              }
+
+            });
+
+            return false;
+
+          } else if (razorPayCheckbox.checked) {
+            $.ajax({
+
+              url: "/findOrderPlaced",
+              type: "POST",
+              data: {
+                payment: "Razorpay",
+                name: nameInput.value,
+                state: stateInput.value,
+                zip: zipCodeInput.value,
+                phone: phoneInput.value,
+                address: addressInput.value,
+                city: cityInput.value
+              },
+
+
+              success: function (res) {
+
+
+                if (res.success) {
+
+                  var options = {
+
+                    "key": "" + res.key_id + "",
+                    "amount": "" + res.amount + "",
+                    "currency": "INR",
+                    "name": "" + res.product_name + "",
+                    "description": "" + res.description + "",
+                    "image": "https://dummyimage.com/600x400/000/fff",
+                    "order_id": "" + res.order_id + "",
+                    "handler": function (response) {
+
+
+                      varifyPayment(response, res.order);
+
+
+
+                    },
+                    "prefill": {
+                      "contact": res.contact,
+                      "name": res.name,
+                      "email": res.email
+                    },
+                    "notes": {
+                      "description": "" + res.description + ""
+                    },
+                    "theme": {
+                      "color": "#2300a3"
+                    }
+                  };
+
+                  var razorpayObject = new Razorpay(options);
+                  razorpayObject.open();
+                  // razorpayObject.on('payment.success', function (response) {
+                  //   // Show custom success message or perform other actions
+                  //   var successMessage = document.getElementById("success-message");
+                  //   successMessage.style.display = "block";
+
+                  //   // Hide the success message after a specific duration (e.g., 5 seconds)
+                  //   setTimeout(function () {
+                  //     successMessage.style.display = "none";
+                  //   }, 5000);
+                  // });
+
+                  razorpayObject.on('payment.failed', function (response) {
+                    alert("Payment Failed");
+                    alert(response.error.code);
+                    alert(response.error.description);
+                    alert(response.error.source);
+                    alert(response.error.step);
+                    alert(response.error.reason);
+                    alert(response.error.metadata.order_id);
+                    alert(response.error.metadata.payment_id);
+                  });
+
+                }
+                else {
+                  alert(res.msg);
+                }
+              }
+            })
+
+
+          } else {
+            const nameInput = document.getElementById('first-name');
+            const addressInput = document.getElementById('address');
+            const cityInput = document.getElementById('city');
+            const stateInput = document.getElementById('state');
+            const zipCodeInput = document.getElementById('zip-code');
+            const phoneInput = document.getElementById('phone');
+            $.ajax({
+              url: "/findOrderPlaced",
+              type: "POST",
+              data: {
+                payment: "COD",
+                name: nameInput.value,
+                state: stateInput.value,
+                zip: zipCodeInput.value,
+                phone: phoneInput.value,
+                address: addressInput.value,
+                city: cityInput.value
+
+              },
+              success: function (res) {
+                console.log(res)
+                // Handle successful response
+                // Assuming the response contains the rendered HTML for the "orderSuccessful" page
+                
+                
+              }
+            });
+
+
+          }
+
+
+        });
+      });
+
+      function varifyPayment(payment, order) {
+
+        // Send the signature to the backend
+        $.ajax({
+          url: "/verifySignature",
+          type: "POST",
+          data: {
+            payment, order
+          },
+          error: function (err) {
+            // Handle the error, if any
+            console.log(err);
+          }
+
+        });
+
+
+      }
+
+
+
+    </script>
+
+    <script>
+
+      const addressCheckbox = document.getElementById('address-checkbox');
+      const nameInput = document.getElementById('first-name');
+      const addressInput = document.getElementById('address');
+      const cityInput = document.getElementById('city');
+      const stateInput = document.getElementById('state');
+      const zipCodeInput = document.getElementById('zip-code');
+      const phoneInput = document.getElementById('phone');
+      addressCheckbox.addEventListener('change', function () {
+        if (this.checked && addressInput.value === '' && cityInput.value === '' && stateInput.value === '' && zipCodeInput.value === '' && phoneInput.value === '' && nameInput.value === '') {
+          // Populate input fields with order-related values
+
+          addressInput.value = '<%= order.address %>';
+          nameInput.value = '<%= user.name %>'
+          cityInput.value = '<%= order.city %>';
+          stateInput.value = '<%= order.state %>';
+          zipCodeInput.value = '<%= order.zipCode %>';
+          phoneInput.value = '<%= user.phone %>';
+        } else {
+          // Clear input fields
+          addressInput.value = '';
+          nameInput.value = '';
+          cityInput.value = '';
+          stateInput.value = '';
+          zipCodeInput.value = '';
+          phoneInput.value = '';
+        }
+      });
+
+
+
+
+
+
+
+
+
+    </script>
+
+
+
+
+
+
+    <%- include("partials/footer") %>

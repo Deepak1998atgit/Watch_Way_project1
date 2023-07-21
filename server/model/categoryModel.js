@@ -5,20 +5,29 @@ const categorySchema = new mongoose.Schema({
     category: {
         type: String,
         unique: true,
-        require: true
+        required: true
 
     },
     description: {
         type: String,
-        require: true,
+        required: true,
 
 
-    }
+    },
+    products: [
+        {
+
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'product',
+            required: true
+
+        }
+    ],
 
 });
 
 
-const Category = new mongoose.model("category", categorySchema);
+const category = new mongoose.model("category", categorySchema);
 
 
-module.exports = Category;
+module.exports = category;

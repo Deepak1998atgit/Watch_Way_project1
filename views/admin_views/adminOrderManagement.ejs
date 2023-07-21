@@ -1,0 +1,318 @@
+<%- include("partials/header") %>
+    <div class="container-scroller">
+        <!-- partial:partials/_sidebar.html -->
+        <%- include("partials/sidebar") %>
+            <!-- partial -->
+            <div class="container-fluid page-body-wrapper">
+                <!-- partial:partials/_navbar.html -->
+                <%- include("partials/navbar") %>
+                    <div class="container-fluid page-body-wrapper-lg">
+                        <!-- partial -->
+                        <div class="main-panel">
+                           
+
+                            <div class="row ">
+                                <div class="col-12 grid-margin">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h4 class="card-title">Order Management</h4>
+
+
+                                            <div class="table-responsive">
+                                                <form id="dateRangeForm" method="post" action="/ordersSort">
+                                                    <input type="date" id="startDate" class="" name="startDate">
+                                                    <input type="date" id="endDate" name="endDate">
+                                                    <button type="submit" class="btn btn-info">Submit</button>
+                                                </form>
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th> No</th>
+                                                            <th> Date</th>
+                                                            <th> Client </th>
+                                                            <th> products </th>
+                                                            <th> Qty </th>
+                                                            <th> Price</th>
+                                                            <th> Image </th>
+                                                            <th> Total </th>
+                                                            <th> payment </th>
+                                                            <th>Action </th>
+                                                            <th>Order Status </th>
+
+                                                        </tr>
+                                                    </thead>
+
+                                                    <tbody>
+                                                        <% orders.reverse().forEach((order, index)=> { %>
+
+                                                            <tr>
+                                                                <td>
+                                                                    <p>
+                                                                        <%= index + 1 %>
+                                                                    </p>
+                                                                </td>
+                                                                <td>
+                                                                    <p>
+                                                                        <%= order.createdAt.toLocaleDateString() %>
+                                                                    </p>
+                                                                </td>
+                                                                <td>
+                                                                    <p>
+                                                                        <%= order.name %>
+                                                                    </p>
+
+                                                                </td>
+                                                                <td>
+                                                                    <% order.items.forEach((item)=> { %>
+                                                                        <p>
+                                                                            <%= item.product?.name %>
+                                                                        </p>
+                                                                        <% }) %>
+                                                                </td>
+                                                                <td>
+                                                                    <% order.items.forEach((item)=> { %>
+                                                                        <p>
+                                                                            <%= item.quantity %>
+                                                                        </p>
+                                                                        <% }) %>
+
+                                                                </td>
+                                                                <td>
+                                                                    <% order.items.forEach((item)=> { %>
+                                                                        <p>
+                                                                            <%= item.price %>
+                                                                        </p>
+
+                                                                        <% }) %>
+
+                                                                </td>
+
+
+                                                                <td>
+                                                                    <% order.items.forEach((item)=> { %>
+                                                                        <img class="img-thumbnail"
+                                                                             src="/<%= item.product?.photo[0] %>" style=" width:50px; 
+                                                                        height:50px;
+                                                                        background-color:#7AF723; 
+                                                                        border-radius:10px; 
+                                                                        display: flex;
+                                                                        overflow: hidden;" />
+
+                                                                        <% }) %>
+
+
+                                                                </td>
+                                                                <td>
+                                                                    <p>
+                                                                        <%= order.total %>
+                                                                    </p>
+                                                                </td>
+                                                                <td>
+                                                                    <p>
+                                                                        <%= order.paymentMethod %>
+                                                                    </p>
+                                                                </td>
+                                                                <td>
+                                                                    <li class="nav-item dropdown"
+                                                                        style=" list-style-type: none;">
+                                                                        <a class="nav-link" id="profileDropdown"
+                                                                            href="#" data-toggle="dropdown">
+                                                                            <div class="navbar-profile">
+
+
+                                                                                <i class="mdi mdi-pen d-none d-sm-block"
+                                                                                    style="font-size: 24px;"></i>
+                                                                            </div>
+                                                                        </a>
+                                                                        <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
+                                                                            aria-labelledby="profileDropdown">
+                                                                            <h6 class="p-3 mb-0">Take Action</h6>
+                                                                            <div class="dropdown-divider"></div>
+
+                                                                            <div class="dropdown-divider"></div>
+                                                                            <a class="dropdown-item preview-item"
+                                                                                href="/updateOrderStatus/<%= order._id %>?status=Pending">
+                                                                                <div class="preview-thumbnail">
+                                                                                    <div
+                                                                                        class="preview-icon bg-dark rounded-circle">
+                                                                                        <i
+                                                                                            class="mdi mdi-logout text-danger"></i>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="preview-item-content">
+                                                                                    <p class="preview-subject mb-1">
+                                                                                        Pending</p>
+                                                                                </div>
+                                                                            </a>
+                                                                            <div class="dropdown-divider"></div>
+                                                                            <a class="dropdown-item preview-item"
+                                                                                href="/updateOrderStatus/<%= order._id %>?status=Cancelled">
+                                                                                <div class="preview-thumbnail">
+                                                                                    <div
+                                                                                        class="preview-icon bg-dark rounded-circle">
+                                                                                        <i
+                                                                                            class="mdi mdi-logout text-danger"></i>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="preview-item-content">
+                                                                                    <p class="preview-subject mb-1">
+                                                                                        Cancelled </p>
+                                                                                </div>
+                                                                            </a>
+                                                                            <div class="dropdown-divider"></div>
+                                                                            <a class="dropdown-item preview-item"
+                                                                                href="/updateOrderStatus/<%= order._id %>?status=Refunded Amount">
+                                                                                <div class="preview-thumbnail">
+                                                                                    <div
+                                                                                        class="preview-icon bg-dark rounded-circle">
+                                                                                        <i
+                                                                                            class="mdi mdi-logout text-danger"></i>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="preview-item-content">
+                                                                                    <p class="preview-subject mb-1">
+                                                                                        Refunded Amount</p>
+                                                                                </div>
+                                                                            </a>
+                                                                            <div class="dropdown-divider"></div>
+                                                                            <a class="dropdown-item preview-item"
+                                                                                href="/updateOrderStatus/<%= order._id %>?status=Delivered">
+                                                                                <div class="preview-thumbnail">
+                                                                                    <div
+                                                                                        class="preview-icon bg-dark rounded-circle">
+                                                                                        <i
+                                                                                            class="mdi mdi-logout text-danger"></i>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="preview-item-content">
+                                                                                    <p class="preview-subject mb-1">
+                                                                                        Delivered
+                                                                                    </p>
+                                                                                </div>
+                                                                                <div class="dropdown-divider"></div>
+                                                                            </a>
+                                                                            <div class="dropdown-divider"></div>
+                                                                            <a class="dropdown-item preview-item"
+                                                                                href="/updateOrderStatus/<%= order._id %>?status=Returned">
+                                                                                <div class="preview-thumbnail">
+                                                                                    <div
+                                                                                        class="preview-icon bg-dark rounded-circle">
+                                                                                        <i
+                                                                                            class="mdi mdi-logout text-danger"></i>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="preview-item-content">
+                                                                                    <p class="preview-subject mb-1">
+                                                                                    Returned
+                                                                                    </p>
+                                                                                </div>
+                                                                                <div class="dropdown-divider"></div>
+                                                                            </a>
+                                                                            <div class="dropdown-divider"></div>
+                                                                            <a class="dropdown-item preview-item"
+                                                                                href="/updateOrderStatus/<%= order._id %>?status=Delete">
+                                                                                <div class="preview-thumbnail">
+                                                                                    <div
+                                                                                        class="preview-icon bg-dark rounded-circle">
+                                                                                        <i
+                                                                                            class="mdi mdi-logout text-danger"></i>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="preview-item-content">
+                                                                                    <p class="preview-subject mb-1">
+                                                                                    Delete
+                                                                                    </p>
+                                                                                </div>
+                                                                                <div class="dropdown-divider"></div>
+                                                                            </a>
+
+                                                                        </div>
+                                                                    </li>
+
+
+                                                                </td>
+                                                                <td>
+                                                                    <p>
+                                                                        <%= order.status %>
+                                                                    </p>
+                                                                </td>
+                                                            </tr>
+                                                            <% }) %>
+
+                                                                <tr>
+                                                                    <td>
+                                                                        <div class="form-check form-check-muted m-0">
+
+                                                                        </div>
+                                                                    </td>
+                                                                    <td> </td>
+                                                                    <td> </td>
+                                                                    <td> </td>
+                                                                    <td> </td>
+                                                                    <td>END</td>
+                                                                    <td> </td>
+                                                                    <td> </td>
+                                                                    <td> </td>
+                                                                    <td> </td>
+                                                                    <td> </td>
+
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        <div class="form-check form-check-muted m-0">
+
+                                                                        </div>
+                                                                    </td>
+                                                                    <td> </td>
+                                                                    <td> </td>
+                                                                    <td> </td>
+                                                                    <td> </td>
+                                                                    <td></td>
+                                                                    <td> </td>
+                                                                    <td> </td>
+                                                                    <td> </td>
+                                                                    <td> </td>
+                                                                    <td> </td>
+
+                                                                </tr>
+                                                             
+
+
+
+
+
+
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+
+                        <script>
+                            function submitDateRange() {
+                                const startDate = document.getElementById('startDate').value;
+                                const endDate = document.getElementById('endDate').value;
+
+                                // Send AJAX request to the server with the date range
+                                axios.post('/ordersSort', { startDate, endDate })
+                                    .then(response => {
+                                        // Handle the response and update the UI with the sorted orders
+                                        const sortedOrders = response.data;
+                                        // Update the UI with the sorted orders, e.g., render a new list of orders
+                                    })
+                                    .catch(error => {
+                                        // Handle the error
+                                    });
+                            }
+
+                        </script>
+                        <%- include("partials/footer") %>
